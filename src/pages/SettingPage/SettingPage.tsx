@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import './App.css';
 
-function App() {
+export const SettingPage = () => {
 	const [word, setWord] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectVoice, setSelectVoice] = useState(0);
@@ -70,6 +69,4 @@ function App() {
       }
 		</div>
 	);
-}
-
-export default App;
+};
