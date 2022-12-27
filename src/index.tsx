@@ -4,9 +4,16 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom';
+import { ConfigProvider } from 'antd';
+import dayjs from 'dayjs';
+
+import 'dayjs/locale/zh-cn';
+import zhCN from 'antd/locale/zh_CN';
+import 'antd/dist/reset.css';
 
 import { ErrorPage, ChatPage, SettingPage } from './pages';
-import './index.css';
+
+dayjs.locale('zh-cn');
 
 const router = createBrowserRouter([
   {
@@ -23,6 +30,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ConfigProvider locale={zhCN}>
+      <RouterProvider router={router} />
+    </ConfigProvider>
   </React.StrictMode>,
 )
