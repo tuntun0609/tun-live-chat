@@ -1,3 +1,3 @@
 export * from './error-page/error-page';
-export * from './ChatPage/ChatPage';
-export * from './SettingPage/SettingPage';
+export * from './chat-page/chat-page';
+export * from './setting-page/setting-page';
