@@ -67,8 +67,8 @@ export const SettingPage = () => {
 
   // 连接
   const onConnect = async () => {
-    const data = await api.getDanmuInfo('BV1wK411z7fy');
-    console.log(data);
+    const data = await api.getDanmuInfo(23771189);
+    console.log(data.data);
   };
 
 	return (
