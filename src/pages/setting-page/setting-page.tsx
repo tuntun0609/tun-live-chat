@@ -1,9 +1,8 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Col, Input, Row, Select, Space } from 'antd';
-import { KeepLiveWS } from 'bilibili-live-ws';
 
 import './setting-page.scss';
-import { api, decode, encode } from '@utils';
+import { api, decode, encode, getVoices } from '@utils';
 
 export const SettingPage = () => {
 	const [word, setWord] = useState('豆豆豆豆 我好喜欢你啊！！！!为了你，我要听爱要坦荡荡');
@@ -11,23 +10,7 @@ export const SettingPage = () => {
   const [selectVoice, setSelectVoice] = useState(0);
   const [voicesList, setVoicesList] = useState<SpeechSynthesisVoice[]>([]);
   const ws = useRef<WebSocket | null>(null);
-  const heartbeatId = useRef<string | number | NodeJS.Timeout | undefined | null>(null);
-
-  // 获取可以转换的声音列表
-	const getVoices = (): Promise<SpeechSynthesisVoice[]> => {
-		return new Promise(function (resolve) {
-			let id: string | number | NodeJS.Timeout | undefined;
-			id = setInterval(() => {
-        const list = window.speechSynthesis.getVoices().filter((item) => (
-          item.lang.includes('zh-CN')
-        ));
-				if (list.length !== 0) {
-					resolve(list);
-					clearInterval(id);
-				}
-			}, 0);
-		});
-	}
+  const heartbeatId = useRef<number | undefined | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -39,10 +22,6 @@ export const SettingPage = () => {
     }
 
     init();
-  }, []);
-
-  useLayoutEffect(() => {
-
   }, []);
 
   // 转换
@@ -60,10 +39,11 @@ export const SettingPage = () => {
 
   // 连接
   const onConnect = async () => {
-    const data = await api.getDanmuInfo(23197314);
-    console.log(data.data);
+    // const data = await api.getDanmuInfo(23197314);
+    // console.log(data.data);
 
-    ws.current = new WebSocket(`ws://${data.data.host_list[0].host}:${data.data.host_list[0].ws_port}/sub`);
+    // ws.current = new WebSocket(`ws://${data.data.host_list[0].host}:${data.data.host_list[0].ws_port}/sub`);
+    ws.current = new WebSocket('ws://broadcastlv.chat.bilibili.com:2244/sub');
     ws.current.onopen = (evt) => { 
       console.log("Connection open ...");
       ws.current?.send(encode(JSON.stringify({
@@ -73,10 +53,10 @@ export const SettingPage = () => {
         type: 2,
       }), 7));
     };
-    heartbeatId.current = setInterval(function () {
+    heartbeatId.current = setInterval(() => {
       ws.current?.send(encode('', 2));
     }, 30000);
-    ws.current.onmessage = async function (msgEvent) {
+    ws.current.onmessage = async (msgEvent) => {
       const packet: any = await decode(msgEvent.data);
       switch (packet.op) {
         case 8:
@@ -88,6 +68,7 @@ export const SettingPage = () => {
           break;
         case 5:
           packet.body.forEach((body: any)=>{
+            console.log(body.cmd, body);
             switch (body.cmd) {
               case 'DANMU_MSG':
                 console.log(`${body.info[2][1]}: ${body.info[1]}`);
@@ -98,6 +79,8 @@ export const SettingPage = () => {
               case 'WELCOME':
                 console.log(`欢迎 ${body.data.uname}`);
                 break;
+              case 'SUPER_CHAT_MESSAGE':
+                console.log(`${body.data.uname}`);
               // 此处省略很多其他通知类型
               default:
                 // console.log(body);

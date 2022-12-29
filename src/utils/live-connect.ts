@@ -1,9 +1,33 @@
 import pako from 'pako';
 
+/*
+DANMU_MSG	弹幕消息
+WELCOME_GUARD	欢迎xxx老爷
+ENTRY_EFFECT	欢迎舰长进入房间
+WELCOME	欢迎xxx进入房间
+SUPER_CHAT_MESSAGE_JPN	
+SUPER_CHAT_MESSAGE	二个都是SC留言 
+
+SEND_GIFT	投喂礼物
+COMBO_SEND	连击礼物
+
+ANCHOR_LOT_START	天选之人开始完整信息
+ANCHOR_LOT_END	天选之人获奖id
+ANCHOR_LOT_AWARD	天选之人获奖完整信息
+
+GUARD_BUY	上舰长
+USER_TOAST_MSG	续费了舰长
+NOTICE_MSG	在本房间续费了舰长
+
+ACTIVITY_BANNER_UPDATE_V2	小时榜变动
+
+ROOM_REAL_TIME_MESSAGE_UPDATE	粉丝关注变动
+*/
+
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder('utf-8');
 
-const readInt = function (buffer: Uint8Array, start: number, len: number) {
+const readInt = (buffer: Uint8Array, start: number, len: number) => {
 	let result = 0
 	for (let i = len - 1; i >= 0; i--) {
 		result += Math.pow(256, len - i - 1) * buffer[start + i]
@@ -11,15 +35,13 @@ const readInt = function (buffer: Uint8Array, start: number, len: number) {
 	return result
 }
 
-const writeInt = function (buffer: any[], start: number, len: number, value: number) {
-	let i = 0
-	while (i < len) {
-		buffer[start + i] = value / Math.pow(256, len - i - 1)
-		i++
+const writeInt = (buffer: number[], start: number, len: number, value: number) => {
+	for (let i = 0; i < len; i++) {
+		buffer[start + i] = value / Math.pow(256, len - i - 1);
 	}
 }
 
-export const encode = function (str: string | undefined, op: any) {
+export const encode = (str: string | undefined, op: number) => {
 	let data = textEncoder.encode(str);
 	let packetLen = 16 + data.byteLength;
 	let header = [0, 0, 0, 0, 0, 16, 0, 1, 0, 0, 0, op, 0, 0, 0, 1]
@@ -27,12 +49,12 @@ export const encode = function (str: string | undefined, op: any) {
 	return (new Uint8Array(header.concat(...data))).buffer
 }
 
-export const decode = function (blob: Blob) {
-	return new Promise(function (resolve, reject) {
+export const decode = (blob: Blob) => {
+	return new Promise((resolve, reject) => {
 		let reader = new FileReader();
-		reader.onload = function (e) {
-			let buffer = new Uint8Array((e.target?.result) as any)
-			let result: {
+		reader.onload = (e) => {
+			let buffer = new Uint8Array((e.target?.result) as ArrayBuffer)
+			const result: {
 				[key: string]: any
 			} = {}
 			result.packetLen = readInt(buffer, 0, 4)
