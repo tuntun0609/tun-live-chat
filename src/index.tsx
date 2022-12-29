@@ -8,8 +8,8 @@ import { ConfigProvider } from 'antd';
 import dayjs from 'dayjs';
 
 import 'dayjs/locale/zh-cn';
-import zhCN from 'antd/locale/zh_CN';
-import 'antd/dist/reset.css';
+// import zhCN from '../node_modules/antd/locale/zh_CN';
+import './reset.css';
 
 import { ErrorPage, ChatPage, SettingPage } from './pages';
 
@@ -30,7 +30,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <ConfigProvider locale={zhCN}>
+    <ConfigProvider
+      // locale={zhCN}
+    >
       <RouterProvider router={router} />
     </ConfigProvider>
   </React.StrictMode>,

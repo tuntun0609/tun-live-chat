@@ -1,18 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Col, Input, Row, Select, Space } from 'antd';
+import { KeepLiveWS } from 'bilibili-live-ws';
 
 import './setting-page.scss';
+import { api } from '@utils';
 
 export const SettingPage = () => {
-	const [word, setWord] = useState('豆豆豆豆 我好喜欢你啊！！！！为了你，我要听爱要坦荡荡');
+	const [word, setWord] = useState('豆豆豆豆 我好喜欢你啊！！！!为了你，我要听爱要坦荡荡');
   const [loading, setLoading] = useState(false);
   const [selectVoice, setSelectVoice] = useState(0);
   const [voicesList, setVoicesList] = useState<SpeechSynthesisVoice[]>([]);
+  const ws = useRef<KeepLiveWS | null>(null);
 
   // 获取可以转换的声音列表
 	const getVoices = (): Promise<SpeechSynthesisVoice[]> => {
 		return new Promise(function (resolve) {
-			let id: number | undefined;
+			let id: string | number | NodeJS.Timeout | undefined;
 			id = setInterval(() => {
         const list = window.speechSynthesis.getVoices().filter((item) => (
           item.lang.includes('zh-CN')
@@ -33,7 +36,20 @@ export const SettingPage = () => {
       const voicesList = await getVoices();
       setVoicesList(voicesList);
     }
+
     init();
+    
+    // ws.current = new KeepLiveWS(23197314);
+
+    // ws.current.on('open', () => {
+    //   console.log('已连接直播弹幕服务器');
+    // });
+
+    // ws.current.on('live', () => {
+    //   console.log('已连接直播间');
+    // });
+    // ws.current.on('close', () => console.log('已断开与直播弹幕服务器的连接'));
+    // ws.current.on('heartbeat', online => console.log('当前人气值', online));
   }, []);
 
   // 转换
@@ -48,6 +64,12 @@ export const SettingPage = () => {
       };
     }
 	};
+
+  // 连接
+  const onConnect = async () => {
+    const data = await api.getDanmuInfo('BV1wK411z7fy');
+    console.log(data);
+  };
 
 	return (
     <div
@@ -103,6 +125,9 @@ export const SettingPage = () => {
                 }))}
               ></Select>
             </Col>
+          </Row>
+          <Row gutter={8} justify='center'>
+            <Button onClick={onConnect}>连接</Button>
           </Row>
         </Space>
       </div>

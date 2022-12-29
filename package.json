@@ -17,7 +17,11 @@
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
     "antd": "^5.1.1",
+    "axios": "^1.2.1",
+    "buffer": "^6.0.3",
     "dayjs": "^1.11.7",
+    "events": "^3.3.0",
+    "pako": "^2.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.6.1"
@@ -28,11 +32,12 @@
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.0.0",
+    "bilibili-live-ws": "^6.2.1",
     "commitizen": "^4.2.6",
     "cz-conventional-changelog": "3.3.0",
     "husky": "^8.0.2",
     "sass": "^1.57.1",
     "typescript": "^4.9.4",
-    "vite": "^4.0.3"
+    "vite": "^4.0.0"
   }
 }
