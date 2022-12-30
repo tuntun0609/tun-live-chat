@@ -1,10 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { decode, encode } from '@utils';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import qs from 'qs';
 
 export const ChatPage = () => {
 	const ws = useRef<WebSocket | null>(null);
 	const heartbeatId = useRef<number | undefined | null>(null);
+	const [voicesList, setVoicesList] = useState<SpeechSynthesisVoice[]>([]);
+
+	useEffect(() => {
+		if (window.location.search) {
+			console.log(qs.parse(window.location.search.slice(1)));
+		} else {
+			console.error('网址缺失信息');
+		}
+	}, []);
+
+	// 转换
+	// const onTTS = async (word: string | undefined) => {
+	// 	if (word) {
+	// 		const msg = new SpeechSynthesisUtterance(word);
+	// 		msg.voice = voicesList[selectVoice];
+	// 		speechSynthesis.speak(msg);
+	// 		msg.onstart = () => {};
+	// 	}
+	// };
 
 	// 连接
 	const onConnect = async () => {

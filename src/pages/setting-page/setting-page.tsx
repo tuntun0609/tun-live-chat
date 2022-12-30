@@ -1,44 +1,24 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import qs from 'qs';
 
 import './setting-page.scss';
-import { getVoices } from '@utils';
+import { useSpeechSynthesisVoices } from '@utils';
 import { SettingPageTitle } from '@components';
 
 export const SettingPage = () => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [selectVoice, setSelectVoice] = useState(0);
-	const [voicesList, setVoicesList] = useState<SpeechSynthesisVoice[]>([]);
-
-	useEffect(() => {
-		const init = async () => {
-			if (typeof speechSynthesis === 'undefined') {
-				return;
-			}
-			const voicesList = await getVoices();
-			console.log(voicesList);
-			setVoicesList(voicesList);
-		};
-
-		init();
-	}, []);
-
-	// 转换
-	// const onTTS = async (word: string | undefined) => {
-	// 	if (word) {
-	// 		const msg = new SpeechSynthesisUtterance(word);
-	// 		msg.voice = voicesList[selectVoice];
-	// 		speechSynthesis.speak(msg);
-	// 		msg.onstart = () => {};
-	// 	}
-	// };
+	const voicesList = useSpeechSynthesisVoices();
+	const navigate = useNavigate();
 
 	const onVoiceSelect = useCallback((value: string) => {
 		setSelectVoice(voicesList.findIndex(item => item.name === value));
 	}, []);
 
 	const onStart = useCallback((values: any) => {
-		console.log(values);
+		navigate(`/chat?${qs.stringify(values)}`);
 	}, []);
 
 	const GithubStarIcon = () => (
