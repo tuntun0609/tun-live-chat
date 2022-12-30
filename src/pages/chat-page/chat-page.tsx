@@ -1,30 +1,27 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { decode, encode } from '@utils';
+import { decode, encode, useSpeechSynthesisVoices } from '@utils';
 import { useEffect, useRef, useState } from 'react';
 import qs from 'qs';
+import { Button } from 'antd';
+
+import { useQuery } from '@utils';
 
 export const ChatPage = () => {
 	const ws = useRef<WebSocket | null>(null);
 	const heartbeatId = useRef<number | undefined | null>(null);
-	const [voicesList, setVoicesList] = useState<SpeechSynthesisVoice[]>([]);
-
-	useEffect(() => {
-		if (window.location.search) {
-			console.log(qs.parse(window.location.search.slice(1)));
-		} else {
-			console.error('网址缺失信息');
-		}
-	}, []);
+	const voicesList = useSpeechSynthesisVoices();
+	const query = useQuery<Setting>();
 
 	// 转换
-	// const onTTS = async (word: string | undefined) => {
-	// 	if (word) {
-	// 		const msg = new SpeechSynthesisUtterance(word);
-	// 		msg.voice = voicesList[selectVoice];
-	// 		speechSynthesis.speak(msg);
-	// 		msg.onstart = () => {};
-	// 	}
-	// };
+	const onTTS = async (word: string | undefined, voice?: string) => {
+		if (word) {
+			const index = voice ? voicesList.findIndex(item => item.name === voice) : 0;
+			const msg = new SpeechSynthesisUtterance(word);
+			msg.voice = voicesList[index === -1 ? 0 : index];
+			speechSynthesis.speak(msg);
+			// msg.onstart = () => {};
+		}
+	};
 
 	// 连接
 	const onConnect = async () => {
@@ -90,6 +87,11 @@ export const ChatPage = () => {
 	};
 
 	return (
-		<div>ChatPage</div>
+		<div>
+			<Button onClick={() => {
+				console.log(query);
+				onTTS('测试测试测试', query?.voice);
+			}}>test</Button>
+		</div>
 	);
 };

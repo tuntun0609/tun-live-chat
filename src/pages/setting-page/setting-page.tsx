@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
@@ -9,13 +9,8 @@ import { SettingPageTitle } from '@components';
 
 export const SettingPage = () => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [selectVoice, setSelectVoice] = useState(0);
 	const voicesList = useSpeechSynthesisVoices();
 	const navigate = useNavigate();
-
-	const onVoiceSelect = useCallback((value: string) => {
-		setSelectVoice(voicesList.findIndex(item => item.name === value));
-	}, []);
 
 	const onStart = useCallback((values: any) => {
 		navigate(`/chat?${qs.stringify(values)}`);
@@ -73,7 +68,6 @@ export const SettingPage = () => {
 								>
 									<Select
 										style={{ width: '100%' }}
-										onChange={onVoiceSelect}
 										options={voicesList.map(voice => ({
 											value: voice.name,
 											label: voice.name,
