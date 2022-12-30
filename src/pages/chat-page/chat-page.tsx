@@ -2,7 +2,7 @@
 import { decode, encode, getVoices, useSpeechSynthesisVoices } from '@utils';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from 'antd';
-import { isUndefined, isNull, isEmpty } from 'lodash';
+import { isUndefined, isNull } from 'lodash';
 
 import { useQuery } from '@utils';
 
@@ -13,12 +13,11 @@ export const ChatPage = () => {
 	const query = useQuery<Setting>();
 
 	useEffect(() => {
-		if (!isUndefined(query) && !isEmpty(voicesList)) {
-			const index = query.voice ? voicesList?.findIndex(item => item.name === query.voice) : 0;
-			if (query.roomid !== undefined) {
-				onConnect(query, index);
+		if (!isUndefined(query) && !isUndefined(voicesList)) {
+			if (query.roomid !== undefined && ws.current?.readyState !== 1) {
+				onConnect(query);
 			} else {
-				console.error('信息缺失');
+				console.error('错误');
 			}
 		}
 	}, [query, voicesList]);
@@ -30,15 +29,20 @@ export const ChatPage = () => {
 	}, []);
 
 	// 转换
-	const onTTS = useCallback(async (word: string | undefined, voiceIndex?: number) => {
-		const msg = new SpeechSynthesisUtterance(word);
-		msg.voice = voicesList[voiceIndex ?? 0];
-		speechSynthesis.speak(msg);
-		// msg.onstart = () => {};
+	const onTTS = useCallback(async (word: string | undefined) => {
+		if (query?.isTTS === 'true') {
+			const msg = new SpeechSynthesisUtterance(word);
+			const index = query.voice ? voicesList?.findIndex(item => item.name === query.voice) ?? -1 : -1;
+			msg.voice = voicesList?.[index] ?? null;
+			speechSynthesis.speak(msg);
+			// msg.onstart = () => {};
+		} else {
+			console.log('tts close');
+		}
 	}, [voicesList]);
 
 	// 连接
-	const onConnect = async (setting: Setting, voiceIndex: number) => {
+	const onConnect = async (setting: Setting) => {
 		// const data = await api.getDanmuInfo(23197314);
 		// console.log(data.data);
 
@@ -56,7 +60,7 @@ export const ChatPage = () => {
 		heartbeatId.current = setInterval(() => {
 			ws.current?.send(encode('', 2));
 		}, 30000);
-		ws.current.onmessage = async (msgEvent) => {
+		ws.current.addEventListener('message', async (msgEvent) => {
 			const packet: any = await decode(msgEvent.data);
 			switch (packet.op) {
 			case 8:
@@ -80,7 +84,7 @@ export const ChatPage = () => {
 						break;
 					case 'SUPER_CHAT_MESSAGE':
 						console.log(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
-						onTTS(`${body.data.user_info.uname} 发送sc: ${body.data.message}`, voiceIndex);
+						onTTS(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
 						// 此处省略很多其他通知类型
 						break;
 					default:
@@ -92,7 +96,7 @@ export const ChatPage = () => {
 			default:
 				console.log(packet);
 			}
-		};
+		});
 	};
 
 	const onClose = () => {
@@ -104,8 +108,8 @@ export const ChatPage = () => {
 	return (
 		<div>
 			<Button onClick={() => {
-				console.log(voicesList);
-				onTTS('test', 3);
+				onClose();
+				// onTTS('test');
 			}}>close</Button>
 		</div>
 	);

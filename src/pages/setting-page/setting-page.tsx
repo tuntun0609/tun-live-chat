@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
-import { Button, Card, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Card, Col, Form, Input, Row, Select, Switch } from 'antd';
 import { useNavigate } from 'react-router-dom';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import qs from 'qs';
 
 import './setting-page.scss';
@@ -8,11 +9,14 @@ import { useSpeechSynthesisVoices } from '@utils';
 import { SettingPageTitle } from '@components';
 
 export const SettingPage = () => {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const voicesList = useSpeechSynthesisVoices();
+	const [form] = Form.useForm<Setting>();
+	const isTTS = Form.useWatch('isTTS', form);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const navigate = useNavigate();
 
 	const onStart = useCallback((values: any) => {
+		console.log(values);
 		navigate(`/chat?${qs.stringify(values)}`);
 	}, []);
 
@@ -52,6 +56,7 @@ export const SettingPage = () => {
 							}}
 						>
 							<Form
+								form={form}
 								name={'setting'}
 								onFinish={onStart}
 							>
@@ -63,18 +68,28 @@ export const SettingPage = () => {
 									<Input />
 								</Form.Item>
 								<Form.Item
-									name={'voice'}
-									label={'自动阅读语音'}
+									name={'isTTS'}
+									label={'是否开启语音'}
+									valuePropName={'checked'}
 								>
-									<Select
-										style={{ width: '100%' }}
-										options={voicesList.map(voice => ({
-											value: voice.name,
-											label: voice.name,
-										}))}
-									></Select>
+									<Switch></Switch>
 								</Form.Item>
-
+								{
+									isTTS
+										? <Form.Item
+											name={'voice'}
+											label={'自动阅读语音'}
+										>
+											<Select
+												style={{ width: '100%' }}
+												options={voicesList?.map(voice => ({
+													value: voice.name,
+													label: voice.name,
+												}))}
+											></Select>
+										</Form.Item>
+										: null
+								}
 								<Form.Item>
 									<Button
 										style={{ width: '100%' }}
