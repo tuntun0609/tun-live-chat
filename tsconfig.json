@@ -18,7 +18,8 @@
     "jsx": "react-jsx",
     "paths":{
       "@utils": ["src/utils"],
-     },
+      "@components": ["src/components"]
+    },
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
