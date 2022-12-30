@@ -1,8 +1,9 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Button, Card, Col, Form, Input, Row, Select, Switch } from 'antd';
 import { useNavigate } from 'react-router-dom';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { useLocalStorage } from 'usehooks-ts';
 import qs from 'qs';
+import { isEmpty } from 'lodash';
 
 import './setting-page.scss';
 import { useSpeechSynthesisVoices } from '@utils';
@@ -12,11 +13,18 @@ export const SettingPage = () => {
 	const voicesList = useSpeechSynthesisVoices();
 	const [form] = Form.useForm<Setting>();
 	const isTTS = Form.useWatch('isTTS', form);
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [settingData, setSettingData] = useLocalStorage('setting', {});
 	const navigate = useNavigate();
 
-	const onStart = useCallback((values: any) => {
+	useEffect(() => {
+		if (!isEmpty(settingData)) {
+			form.setFieldsValue(settingData);
+		}
+	}, [settingData]);
+
+	const onStart = useCallback((values: Setting) => {
 		console.log(values);
+		setSettingData(values);
 		navigate(`/chat?${qs.stringify(values)}`);
 	}, []);
 

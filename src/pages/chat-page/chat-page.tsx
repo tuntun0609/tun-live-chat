@@ -28,18 +28,55 @@ export const ChatPage = () => {
 		}
 	}, []);
 
-	// 转换
+	// tts
 	const onTTS = useCallback(async (word: string | undefined) => {
 		if (query?.isTTS === 'true') {
 			const msg = new SpeechSynthesisUtterance(word);
 			const index = query.voice ? voicesList?.findIndex(item => item.name === query.voice) ?? -1 : -1;
 			msg.voice = voicesList?.[index] ?? null;
 			speechSynthesis.speak(msg);
-			// msg.onstart = () => {};
 		} else {
 			console.log('tts close');
 		}
 	}, [voicesList]);
+
+	const processMsg = async (msgEvent: MessageEvent<any>) => {
+		const packet: any = await decode(msgEvent.data);
+		switch (packet.op) {
+		case 8:
+			console.log('加入房间');
+			break;
+		case 3:
+			// console.log(`人气：${packet.body?.count}`);
+			break;
+		case 5:
+			packet.body.forEach((body: any)=>{
+				// console.log(body.cmd, body);
+				switch (body.cmd) {
+				case 'DANMU_MSG':
+					console.log(`${body.info[2][1]}: ${body.info[1]}`);
+					break;
+				case 'SEND_GIFT':
+					console.log(`${body.data.uname} ${body.data.action} ${body.data.num} 个 ${body.data.giftName}`);
+					break;
+				case 'WELCOME':
+					// console.log(`欢迎 ${body.data.uname}`);
+					break;
+				case 'SUPER_CHAT_MESSAGE':
+					console.log(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
+					onTTS(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
+					break;
+				// 此处省略很多其他通知类型
+				default:
+					// console.log(body);
+					break;
+				}
+			});
+			break;
+		default:
+			console.log(packet);
+		}
+	};
 
 	// 连接
 	const onConnect = async (setting: Setting) => {
@@ -60,43 +97,7 @@ export const ChatPage = () => {
 		heartbeatId.current = setInterval(() => {
 			ws.current?.send(encode('', 2));
 		}, 30000);
-		ws.current.addEventListener('message', async (msgEvent) => {
-			const packet: any = await decode(msgEvent.data);
-			switch (packet.op) {
-			case 8:
-				console.log('加入房间');
-				break;
-			case 3:
-				console.log(`人气：${packet.body?.count}`);
-				break;
-			case 5:
-				packet.body.forEach((body: any)=>{
-					// console.log(body.cmd, body);
-					switch (body.cmd) {
-					case 'DANMU_MSG':
-						console.log(`${body.info[2][1]}: ${body.info[1]}`);
-						break;
-					case 'SEND_GIFT':
-						console.log(`${body.data.uname} ${body.data.action} ${body.data.num} 个 ${body.data.giftName}`);
-						break;
-					case 'WELCOME':
-						// console.log(`欢迎 ${body.data.uname}`);
-						break;
-					case 'SUPER_CHAT_MESSAGE':
-						console.log(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
-						onTTS(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
-						// 此处省略很多其他通知类型
-						break;
-					default:
-						// console.log(body);
-						break;
-					}
-				});
-				break;
-			default:
-				console.log(packet);
-			}
-		});
+		ws.current.addEventListener('message', processMsg);
 	};
 
 	const onClose = () => {
@@ -108,8 +109,8 @@ export const ChatPage = () => {
 	return (
 		<div>
 			<Button onClick={() => {
-				onClose();
-				// onTTS('test');
+				// onClose();
+				onTTS('test');
 			}}>close</Button>
 		</div>
 	);
