@@ -22,6 +22,7 @@
     "buffer": "^6.0.3",
     "dayjs": "^1.11.7",
     "events": "^3.3.0",
+    "lodash": "^4.17.21",
     "pako": "^2.0.4",
     "qs": "^6.11.0",
     "react": "^18.2.0",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.3.0",
+    "@types/lodash": "^4.14.191",
     "@types/pako": "^2.0.0",
     "@types/qs": "^6.9.7",
     "@types/react": "^18.0.26",

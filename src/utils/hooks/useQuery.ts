@@ -7,7 +7,7 @@ export const useQuery = <T>() => {
 		if (window.location.search) {
 			setQuery(qs.parse(window.location.search.slice(1)) as T);
 		} else {
-			console.error('网址缺失信息');
+			setQuery({} as T);
 		}
 	}, []);
 	return query;

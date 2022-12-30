@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { decode, encode, useSpeechSynthesisVoices } from '@utils';
 import { useEffect, useRef, useState } from 'react';
-import qs from 'qs';
 import { Button } from 'antd';
+import { isUndefined, isNull } from 'lodash';
 
 import { useQuery } from '@utils';
 
@@ -11,6 +11,23 @@ export const ChatPage = () => {
 	const heartbeatId = useRef<number | undefined | null>(null);
 	const voicesList = useSpeechSynthesisVoices();
 	const query = useQuery<Setting>();
+
+	useEffect(() => {
+		if (!isUndefined(query)) {
+			console.log(query);
+			if (query.roomid !== undefined) {
+				onConnect(query);
+			} else {
+				console.error('信息缺失');
+			}
+		}
+	}, [query]);
+
+	useEffect(() => () => {
+		if (!isNull(heartbeatId.current)) {
+			onClose();
+		}
+	}, []);
 
 	// 转换
 	const onTTS = async (word: string | undefined, voice?: string) => {
@@ -24,17 +41,17 @@ export const ChatPage = () => {
 	};
 
 	// 连接
-	const onConnect = async () => {
+	const onConnect = async (setting: Setting) => {
 		// const data = await api.getDanmuInfo(23197314);
 		// console.log(data.data);
 
 		// ws.current = new WebSocket(`ws://${data.data.host_list[0].host}:${data.data.host_list[0].ws_port}/sub`);
 		ws.current = new WebSocket('ws://broadcastlv.chat.bilibili.com:2244/sub');
-		ws.current.onopen = (evt) => {
+		ws.current.onopen = () => {
 			console.log('Connection open ...');
 			ws.current?.send(encode(JSON.stringify({
 				uid: 0,
-				roomid: 23197314,
+				roomid: parseInt(setting.roomid as string, 10),
 				platform: 'web',
 				type: 2,
 			}), 7));
@@ -53,23 +70,23 @@ export const ChatPage = () => {
 				break;
 			case 5:
 				packet.body.forEach((body: any)=>{
-					console.log(body.cmd, body);
+					// console.log(body.cmd, body);
 					switch (body.cmd) {
 					case 'DANMU_MSG':
 						console.log(`${body.info[2][1]}: ${body.info[1]}`);
 						break;
 					case 'SEND_GIFT':
-						console.log(`${body.data.uname} ${body.data.action} ${body.data.num} 个 ${body.data.giftName}`);
+						// console.log(`${body.data.uname} ${body.data.action} ${body.data.num} 个 ${body.data.giftName}`);
 						break;
 					case 'WELCOME':
-						console.log(`欢迎 ${body.data.uname}`);
+						// console.log(`欢迎 ${body.data.uname}`);
 						break;
 					case 'SUPER_CHAT_MESSAGE':
-						console.log(`${body.data.uname}`);
+						console.log(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
 						// 此处省略很多其他通知类型
 						break;
 					default:
-						console.log(body);
+						// console.log(body);
 						break;
 					}
 				});
@@ -90,8 +107,8 @@ export const ChatPage = () => {
 		<div>
 			<Button onClick={() => {
 				console.log(query);
-				onTTS('测试测试测试', query?.voice);
-			}}>test</Button>
+				onClose();
+			}}>close</Button>
 		</div>
 	);
 };

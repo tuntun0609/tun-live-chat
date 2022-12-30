@@ -1,4 +1,4 @@
 type Setting = {
-	roomid: string,
+	roomid?: string,
 	voice?: string,
 };
