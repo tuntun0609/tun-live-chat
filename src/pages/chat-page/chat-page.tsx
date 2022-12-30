@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { decode, encode, useSpeechSynthesisVoices } from '@utils';
-import { useEffect, useRef, useState } from 'react';
+import { decode, encode, getVoices, useSpeechSynthesisVoices } from '@utils';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from 'antd';
-import { isUndefined, isNull } from 'lodash';
+import { isUndefined, isNull, isEmpty } from 'lodash';
 
 import { useQuery } from '@utils';
 
@@ -13,15 +13,15 @@ export const ChatPage = () => {
 	const query = useQuery<Setting>();
 
 	useEffect(() => {
-		if (!isUndefined(query)) {
-			console.log(query);
+		if (!isUndefined(query) && !isEmpty(voicesList)) {
+			const index = query.voice ? voicesList?.findIndex(item => item.name === query.voice) : 0;
 			if (query.roomid !== undefined) {
-				onConnect(query);
+				onConnect(query, index);
 			} else {
 				console.error('信息缺失');
 			}
 		}
-	}, [query]);
+	}, [query, voicesList]);
 
 	useEffect(() => () => {
 		if (!isNull(heartbeatId.current)) {
@@ -30,18 +30,15 @@ export const ChatPage = () => {
 	}, []);
 
 	// 转换
-	const onTTS = async (word: string | undefined, voice?: string) => {
-		if (word) {
-			const index = voice ? voicesList.findIndex(item => item.name === voice) : 0;
-			const msg = new SpeechSynthesisUtterance(word);
-			msg.voice = voicesList[index === -1 ? 0 : index];
-			speechSynthesis.speak(msg);
-			// msg.onstart = () => {};
-		}
-	};
+	const onTTS = useCallback(async (word: string | undefined, voiceIndex?: number) => {
+		const msg = new SpeechSynthesisUtterance(word);
+		msg.voice = voicesList[voiceIndex ?? 0];
+		speechSynthesis.speak(msg);
+		// msg.onstart = () => {};
+	}, [voicesList]);
 
 	// 连接
-	const onConnect = async (setting: Setting) => {
+	const onConnect = async (setting: Setting, voiceIndex: number) => {
 		// const data = await api.getDanmuInfo(23197314);
 		// console.log(data.data);
 
@@ -76,13 +73,14 @@ export const ChatPage = () => {
 						console.log(`${body.info[2][1]}: ${body.info[1]}`);
 						break;
 					case 'SEND_GIFT':
-						// console.log(`${body.data.uname} ${body.data.action} ${body.data.num} 个 ${body.data.giftName}`);
+						console.log(`${body.data.uname} ${body.data.action} ${body.data.num} 个 ${body.data.giftName}`);
 						break;
 					case 'WELCOME':
 						// console.log(`欢迎 ${body.data.uname}`);
 						break;
 					case 'SUPER_CHAT_MESSAGE':
 						console.log(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
+						onTTS(`${body.data.user_info.uname} 发送sc: ${body.data.message}`, voiceIndex);
 						// 此处省略很多其他通知类型
 						break;
 					default:
@@ -106,8 +104,8 @@ export const ChatPage = () => {
 	return (
 		<div>
 			<Button onClick={() => {
-				console.log(query);
-				onClose();
+				console.log(voicesList);
+				onTTS('test', 3);
 			}}>close</Button>
 		</div>
 	);
