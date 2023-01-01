@@ -44,8 +44,11 @@ export const ChatPage = () => {
 		const listHeight = document.querySelector('.danmu-list')?.getBoundingClientRect().top ?? 0;
 		if (item) {
 			const top = item.getBoundingClientRect() && item.getBoundingClientRect().top;
-			if (top <= listHeight) {
-				removeDanmu(item.dataset.id as string);
+			if (top <= (listHeight + 30)) {
+				item.style.opacity = '0';
+				setTimeout(() => {
+					removeDanmu(item.dataset.id as string);
+				}, 500);
 			}
 		}
 	};
@@ -152,9 +155,9 @@ export const ChatPage = () => {
 
 	return (
 		<div id='chat'>
-			<Button onClick={() => {
+			{/* <Button onClick={() => {
 				onClose();
-			}}>close</Button>
+			}}>close</Button> */}
 			<div className='danmu-list'>
 				{
 					danmuList.map(item => (
