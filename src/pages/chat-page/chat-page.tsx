@@ -18,11 +18,11 @@ export const ChatPage = () => {
 	const [danmuList, addDanmu, removeDanmu] = useChatList();
 
 	useEffect(() => {
-		if (!isNull(heartbeatId.current)) {
-			onClose();
-		}
 		const removeInvisibleDanmuId = setInterval(removeInvisibleDanmu, 100);
 		return () => {
+			if (!isNull(heartbeatId.current)) {
+				onClose();
+			}
 			clearInterval(removeInvisibleDanmuId);
 		};
 	}, []);
