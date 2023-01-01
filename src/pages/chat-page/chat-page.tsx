@@ -18,6 +18,17 @@ export const ChatPage = () => {
 	const [danmuList, addDanmu, removeDanmu] = useChatList();
 
 	useEffect(() => {
+		if (!isNull(heartbeatId.current)) {
+			onClose();
+		}
+		const removeInvisibleDanmuId = setInterval(removeInvisibleDanmu, 100);
+		return () => {
+			clearInterval(removeInvisibleDanmuId);
+		};
+	}, []);
+
+	// 信息处理结束后开启websocket
+	useEffect(() => {
 		if (!isUndefined(query) && !isUndefined(voicesList)) {
 			if (query.roomid !== undefined && ws.current?.readyState !== 1) {
 				onConnect(query);
@@ -27,6 +38,7 @@ export const ChatPage = () => {
 		}
 	}, [query, voicesList]);
 
+	// 移除不可见弹幕
 	const removeInvisibleDanmu = () => {
 		const item: HTMLElement | null = document.querySelector('.danmu-item');
 		const listHeight = document.querySelector('.danmu-list')?.getBoundingClientRect().top ?? 0;
@@ -37,16 +49,6 @@ export const ChatPage = () => {
 			}
 		}
 	};
-
-	useEffect(() => {
-		if (!isNull(heartbeatId.current)) {
-			onClose();
-		}
-		const removeInvisibleDanmuId = setInterval(removeInvisibleDanmu, 100);
-		return () => {
-			clearInterval(removeInvisibleDanmuId);
-		};
-	}, []);
 
 	// tts
 	const onTTS = useCallback(async (word: string | undefined) => {
@@ -60,6 +62,7 @@ export const ChatPage = () => {
 		}
 	}, [voicesList]);
 
+	// 处理信息
 	const processMsg = async (msgEvent: MessageEvent<any>) => {
 		const packet: any = await decode(msgEvent.data);
 		switch (packet.op) {
@@ -140,6 +143,7 @@ export const ChatPage = () => {
 		ws.current.addEventListener('message', processMsg);
 	};
 
+	// 关闭
 	const onClose = () => {
 		ws.current?.close();
 		clearInterval(heartbeatId.current as number);
@@ -150,7 +154,6 @@ export const ChatPage = () => {
 		<div id='chat'>
 			<Button onClick={() => {
 				onClose();
-				// onTTS('test');
 			}}>close</Button>
 			<div className='danmu-list'>
 				{

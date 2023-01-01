@@ -74,6 +74,24 @@ export const SettingPage = () => {
 									<Input />
 								</Form.Item>
 								<Form.Item
+									name={'direction'}
+									label={'弹幕排列'}
+								>
+									<Select
+										style={{ width: '100%' }}
+										options={[
+											{
+												value: 'top',
+												label: '自顶部',
+											},
+											{
+												value: 'bottom',
+												label: '自底部',
+											},
+										]}
+									></Select>
+								</Form.Item>
+								<Form.Item
 									name={'isTTS'}
 									label={'是否开启语音'}
 									valuePropName={'checked'}
