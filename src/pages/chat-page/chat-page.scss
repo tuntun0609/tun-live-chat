@@ -12,37 +12,14 @@
   flex-direction: column;
 }
 
-@keyframes danmakuIn {
-  from {
-    transform: translateX(30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
 .danmu {
   &-list {
     height: 100%;
     display: flex;
+    overflow: hidden;
     justify-content: flex-end;
     flex-direction: column;
     width: 100%;
     scroll-behavior: smooth;
-  }
-  &-item {
-    padding: 4px;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    transition: opacity 0.5s;
-    user-select: none;
-    animation: 0.5s danmakuIn;
-    opacity: 1;
-    &.hidden {
-      opacity: 0;
-    }
   }
 }

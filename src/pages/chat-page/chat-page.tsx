@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { decode, encode, useChatList, useSpeechSynthesisVoices } from '@utils';
 import { useCallback, useEffect, useRef } from 'react';
-import { Button } from 'antd';
 import { isUndefined, isNull } from 'lodash';
 import { v4 as uuid } from 'uuid';
+import { Button } from 'antd';
 
 import { useQuery } from '@utils';
 import { DanmuItem, DanmuType } from '@components';
@@ -15,7 +15,7 @@ export const ChatPage = () => {
 	const heartbeatId = useRef<number | undefined | null>(null);
 	const voicesList = useSpeechSynthesisVoices();
 	const query = useQuery<Setting>();
-	const [danmuList, addDanmu] = useChatList<any>();
+	const [danmuList, addDanmu, removeDanmu] = useChatList();
 
 	useEffect(() => {
 		if (!isUndefined(query) && !isUndefined(voicesList)) {
@@ -27,10 +27,25 @@ export const ChatPage = () => {
 		}
 	}, [query, voicesList]);
 
-	useEffect(() => () => {
+	const removeInvisibleDanmu = () => {
+		const item: HTMLElement | null = document.querySelector('.danmu-item');
+		const listHeight = document.querySelector('.danmu-list')?.getBoundingClientRect().top ?? 0;
+		if (item) {
+			const top = item.getBoundingClientRect() && item.getBoundingClientRect().top;
+			if (top <= listHeight) {
+				removeDanmu(item.dataset.id as string);
+			}
+		}
+	};
+
+	useEffect(() => {
 		if (!isNull(heartbeatId.current)) {
 			onClose();
 		}
+		const removeInvisibleDanmuId = setInterval(removeInvisibleDanmu, 100);
+		return () => {
+			clearInterval(removeInvisibleDanmuId);
+		};
 	}, []);
 
 	// tts
@@ -50,6 +65,13 @@ export const ChatPage = () => {
 		switch (packet.op) {
 		case 8:
 			console.log('加入房间');
+			addDanmu({
+				key: uuid(),
+				type: DanmuType.INFO,
+				data: {
+					info: `加入房间 ${query?.roomid}`,
+				},
+			});
 			break;
 		case 3:
 			// console.log(`人气：${packet.body?.count}`);
@@ -73,6 +95,7 @@ export const ChatPage = () => {
 					// console.log(`欢迎 ${body.data.uname}`);
 					break;
 				case 'SUPER_CHAT_MESSAGE':
+					console.log(body.data);
 					console.log(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
 					onTTS(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
 					break;
@@ -97,6 +120,13 @@ export const ChatPage = () => {
 		ws.current = new WebSocket('ws://broadcastlv.chat.bilibili.com:2244/sub');
 		ws.current.onopen = () => {
 			console.log('Connection open ...');
+			addDanmu({
+				key: uuid(),
+				type: DanmuType.INFO,
+				data: {
+					info: '正在连接',
+				},
+			});
 			ws.current?.send(encode(JSON.stringify({
 				uid: 0,
 				roomid: parseInt(setting.roomid as string, 10),
@@ -118,10 +148,10 @@ export const ChatPage = () => {
 
 	return (
 		<div id='chat'>
-			{/* <Button onClick={() => {
+			<Button onClick={() => {
 				onClose();
 				// onTTS('test');
-			}}>close</Button> */}
+			}}>close</Button>
 			<div className='danmu-list'>
 				{
 					danmuList.map(item => (
