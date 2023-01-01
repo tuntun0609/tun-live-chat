@@ -1,16 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { decode, encode, getVoices, useSpeechSynthesisVoices } from '@utils';
+import { decode, encode, getVoices, useChatList, useSpeechSynthesisVoices } from '@utils';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from 'antd';
 import { isUndefined, isNull } from 'lodash';
+import { v4 as uuid } from 'uuid';
 
 import { useQuery } from '@utils';
+
+import './chat-page.scss';
 
 export const ChatPage = () => {
 	const ws = useRef<WebSocket | null>(null);
 	const heartbeatId = useRef<number | undefined | null>(null);
 	const voicesList = useSpeechSynthesisVoices();
 	const query = useQuery<Setting>();
+	const [danmuList, addDanmu] = useChatList<any>();
 
 	useEffect(() => {
 		if (!isUndefined(query) && !isUndefined(voicesList)) {
@@ -55,6 +59,10 @@ export const ChatPage = () => {
 				switch (body.cmd) {
 				case 'DANMU_MSG':
 					console.log(`${body.info[2][1]}: ${body.info[1]}`);
+					addDanmu({
+						data: body.info,
+						key: uuid(),
+					});
 					break;
 				case 'SEND_GIFT':
 					console.log(`${body.data.uname} ${body.data.action} ${body.data.num} 个 ${body.data.giftName}`);
@@ -107,11 +115,19 @@ export const ChatPage = () => {
 	};
 
 	return (
-		<div>
+		<div id='chat'>
 			<Button onClick={() => {
-				// onClose();
-				onTTS('test');
+				onClose();
+				// onTTS('test');
 			}}>close</Button>
+			{
+				danmuList.map(item =>
+					// console.log(item);
+					(
+						<div key={item.key}>{item.data[2][1]}: {item.data[1]}</div>
+					),
+				)
+			}
 		</div>
 	);
 };

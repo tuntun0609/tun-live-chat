@@ -8,7 +8,7 @@ import { ConfigProvider } from 'antd';
 import dayjs from 'dayjs';
 
 import 'dayjs/locale/zh-cn';
-// import zhCN from 'antd/locale/zh_CN';
+import zhCN from '@locale/zh_CN';
 import './reset.css';
 
 import { ErrorPage, ChatPage, SettingPage } from './pages';
@@ -36,7 +36,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 					colorPrimary: '#fb7299',
 				},
 			}}
-			// locale={zhCN}
+			locale={zhCN}
 		>
 			<RouterProvider router={router} />
 		</ConfigProvider>

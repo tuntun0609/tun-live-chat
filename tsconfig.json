@@ -18,7 +18,8 @@
     "jsx": "react-jsx",
     "paths":{
       "@utils": ["src/utils"],
-      "@components": ["src/components"]
+      "@components": ["src/components"],
+      "@locale/zh_CN": ["node_modules/antd/locale/zh_CN.d.ts"]
     },
   },
   "include": ["src"],

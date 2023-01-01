@@ -3,11 +3,11 @@ import { Button, Card, Col, Form, Input, Row, Select, Switch } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import qs from 'qs';
-import { isEmpty } from 'lodash';
+import { isEmpty, isUndefined } from 'lodash';
 
 import './setting-page.scss';
 import { useSpeechSynthesisVoices } from '@utils';
-import { SettingPageTitle } from '@components';
+import { SettingPageTitle, GithubStarIcon } from '@components';
 
 export const SettingPage = () => {
 	const voicesList = useSpeechSynthesisVoices();
@@ -22,20 +22,18 @@ export const SettingPage = () => {
 		}
 	}, [settingData]);
 
+	useEffect(() => {
+		// 将voice选择列表重置
+		if (!isTTS && !isUndefined(isTTS)) {
+			form.setFieldValue('voice', undefined);
+		}
+	}, [isTTS]);
+
 	const onStart = useCallback((values: Setting) => {
 		console.log(values);
 		setSettingData(values);
 		navigate(`/chat?${qs.stringify(values)}`);
 	}, []);
-
-	const GithubStarIcon = () => (
-		<a href='https://github.com/tuntun0609/tun-live-chat' target={'_blank'} rel='noreferrer'>
-			<img
-				alt='GitHub Repo stars'
-				src='https://img.shields.io/github/stars/tuntun0609/tun-live-chat?style=social'
-			/>
-		</a>
-	);
 
 	return (
 		<div
