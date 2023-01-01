@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { decode, encode, getVoices, useChatList, useSpeechSynthesisVoices } from '@utils';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { decode, encode, useChatList, useSpeechSynthesisVoices } from '@utils';
+import { useCallback, useEffect, useRef } from 'react';
 import { Button } from 'antd';
 import { isUndefined, isNull } from 'lodash';
 import { v4 as uuid } from 'uuid';
 
 import { useQuery } from '@utils';
+import { DanmuItem, DanmuType } from '@components';
 
 import './chat-page.scss';
 
@@ -60,8 +61,9 @@ export const ChatPage = () => {
 				case 'DANMU_MSG':
 					console.log(`${body.info[2][1]}: ${body.info[1]}`);
 					addDanmu({
-						data: body.info,
 						key: uuid(),
+						type: DanmuType.DANMU,
+						data: body.info,
 					});
 					break;
 				case 'SEND_GIFT':
@@ -116,18 +118,17 @@ export const ChatPage = () => {
 
 	return (
 		<div id='chat'>
-			<Button onClick={() => {
+			{/* <Button onClick={() => {
 				onClose();
 				// onTTS('test');
-			}}>close</Button>
-			{
-				danmuList.map(item =>
-					// console.log(item);
-					(
-						<div key={item.key}>{item.data[2][1]}: {item.data[1]}</div>
-					),
-				)
-			}
+			}}>close</Button> */}
+			<div className='danmu-list'>
+				{
+					danmuList.map(item => (
+						<DanmuItem key={item.key} danmuData={item}></DanmuItem>
+					))
+				}
+			</div>
 		</div>
 	);
 };

@@ -20,10 +20,6 @@ export const useChatList = <T>(): [T[], (item: T) => void] => {
 		}
 	};
 
-	// useEffect(() => {
-	// 	console.log(danmuList);
-	// }, [danmuList]);
-
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const removeDanma = (index: number) => {
 		setDanmuList(danmuList.filter((_item, i) => i !== index));

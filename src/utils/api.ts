@@ -8,6 +8,7 @@ export const get = async (props: { url: any; params?: any; options?: any; }) => 
 	}).then(r => r.json());
 };
 
+// 弹幕信息源
 export const getDanmuInfo = async (roomid: number) => {
 	const baseUrl = 'https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo';
 	const paramsData = {
@@ -17,6 +18,17 @@ export const getDanmuInfo = async (roomid: number) => {
 		url: baseUrl,
 		params: {
 			...paramsData,
+		},
+	});
+};
+
+// 获取房间信息
+export const getRoomInfo = async (roomid: number) => {
+	const baseUrl = 'https://api.live.bilibili.com/room/v1/Room/get_info';
+	return get({
+		url: baseUrl,
+		params: {
+			id: roomid,
 		},
 	});
 };
