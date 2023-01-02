@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Button, Card, Col, Form, Input, Row, Select, Switch } from 'antd';
+import { Button, Card, Col, Form, InputNumber, Row, Select, Switch } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import qs from 'qs';
@@ -71,7 +71,7 @@ export const SettingPage = () => {
 									label={'房间号'}
 									rules={[{ required: true, message: '必须输入房间号' }]}
 								>
-									<Input />
+									<InputNumber style={{ width: '100%' }} />
 								</Form.Item>
 								<Form.Item
 									name={'direction'}
@@ -90,6 +90,16 @@ export const SettingPage = () => {
 											},
 										]}
 									></Select>
+								</Form.Item>
+								<Form.Item
+									name={'removeDelay'}
+									label={'弹幕移除延迟时间(ms)'}
+								>
+									<InputNumber
+										min={0}
+										step={100}
+										style={{ width: '100%' }}
+									/>
 								</Form.Item>
 								<Form.Item
 									name={'isFansMedal'}

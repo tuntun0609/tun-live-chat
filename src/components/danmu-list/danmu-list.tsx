@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
+import { useInterval } from 'usehooks-ts';
 
 import { DanmuItem } from '@components';
 
@@ -6,10 +7,9 @@ export const DanmuList = ({data, remove, offset = 30, removeDelay = 300}: {
 	data: DanmuItem[];
 	remove: (key: string) => void;
 	offset?: number;
-	removeDelay?: number;
+	removeDelay?: number | string;
 }) => {
 	const listRef = useRef<HTMLDivElement>(null);
-	const removeInvisibleDanmuId = useRef<number | null>(null);
 
 	// 移除不可见弹幕
 	const removeInvisibleDanmu = () => {
@@ -21,19 +21,14 @@ export const DanmuList = ({data, remove, offset = 30, removeDelay = 300}: {
 				firstChildren.style.opacity = '0';
 				setTimeout(() => {
 					remove(firstChildren.dataset.id as string);
-				}, removeDelay);
+				}, typeof removeDelay === 'number' ? removeDelay : parseInt(removeDelay, 10));
 			}
 		}
 	};
 
-	useEffect(() => {
-		if (listRef && removeInvisibleDanmuId) {
-			removeInvisibleDanmuId.current = setInterval(removeInvisibleDanmu, 100);
-		}
-		return () => {
-			clearInterval(removeInvisibleDanmuId.current ?? undefined);
-		};
-	}, [listRef]);
+	useInterval(() => {
+		removeInvisibleDanmu();
+	}, 100);
 
 	return (
 		<div className='danmu-list' ref={listRef}>

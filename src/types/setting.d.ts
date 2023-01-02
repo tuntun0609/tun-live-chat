@@ -5,6 +5,7 @@ type Setting = {
 	direction?: 'top' | 'bottom',
 	isFansMedal?: 'true' | 'false',
 	isDebug?: 'true' | 'false',
+	removeDelay?: string,
 };
 
 type DanmuItem = {

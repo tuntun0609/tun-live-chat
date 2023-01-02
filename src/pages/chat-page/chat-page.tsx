@@ -26,6 +26,7 @@ export const ChatPage = () => {
 	// 信息处理结束后开启websocket
 	useEffect(() => {
 		if (!isUndefined(query) && !isUndefined(voicesList)) {
+			console.log(query);
 			if (query.roomid !== undefined && ws.current?.readyState !== 1) {
 				onConnect(query);
 			} else {
@@ -147,7 +148,8 @@ export const ChatPage = () => {
 			<DanmuList
 				data={danmuList}
 				remove={key => removeDanmu(key)}
-				offset={10}
+				offset={30}
+				removeDelay={query?.removeDelay}
 			></DanmuList>
 		</div>
 	);
