@@ -53,6 +53,7 @@
   border-image: initial;
   border-radius: 2px;
   margin-right: 8px;
+  height: 19px;
   &-name {
     display: flex;
     justify-content: center;
@@ -69,5 +70,12 @@
     color: transparent;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
+  }
+  &-ship-icon {
+    margin-left: -12px;
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
   }
 }
