@@ -4,6 +4,7 @@ type Setting = {
 	voice?: string,
 	direction?: 'top' | 'bottom',
 	isFansMedal?: 'true' | 'false',
+	isDebug?: 'true' | 'false',
 };
 
 type DanmuItem = {

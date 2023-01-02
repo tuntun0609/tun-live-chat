@@ -67,6 +67,7 @@ export const ChatPage = () => {
 			packet.body.forEach((body: any)=>{
 				switch (body.cmd) {
 				case 'DANMU_MSG':
+					console.log(body);
 					console.log(`${body.info[2][1]}: ${body.info[1]}`);
 					addDanmu({
 						key: uuid(),
@@ -136,9 +137,13 @@ export const ChatPage = () => {
 
 	return (
 		<div id='chat'>
-			{/* <Button onClick={() => {
-				onClose();
-			}}>close</Button> */}
+			{
+				query?.isDebug === 'true'
+					? <Button onClick={() => {
+						onClose();
+					}}>close</Button>
+					: null
+			}
 			<DanmuList
 				data={danmuList}
 				remove={key => removeDanmu(key)}
