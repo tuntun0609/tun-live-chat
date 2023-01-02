@@ -2,10 +2,11 @@ import { useEffect, useRef } from 'react';
 
 import { DanmuItem } from '@components';
 
-export const DanmuList = ({data, remove, offset = 30}: {
+export const DanmuList = ({data, remove, offset = 30, removeDelay = 300}: {
 	data: DanmuItem[];
 	remove: (key: string) => void;
 	offset?: number;
+	removeDelay?: number;
 }) => {
 	const listRef = useRef<HTMLDivElement>(null);
 	const removeInvisibleDanmuId = useRef<number | null>(null);
@@ -20,7 +21,7 @@ export const DanmuList = ({data, remove, offset = 30}: {
 				firstChildren.style.opacity = '0';
 				setTimeout(() => {
 					remove(firstChildren.dataset.id as string);
-				}, 500);
+				}, removeDelay);
 			}
 		}
 	};

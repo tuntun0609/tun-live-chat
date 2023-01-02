@@ -65,7 +65,6 @@ export const ChatPage = () => {
 			break;
 		case 5:
 			packet.body.forEach((body: any)=>{
-				// console.log(body.cmd, body);
 				switch (body.cmd) {
 				case 'DANMU_MSG':
 					console.log(`${body.info[2][1]}: ${body.info[1]}`);
@@ -73,6 +72,7 @@ export const ChatPage = () => {
 						key: uuid(),
 						type: DanmuType.DANMU,
 						data: body.info,
+						isFansMedal: query?.isFansMedal ?? 'false',
 					});
 					break;
 				case 'SEND_GIFT':

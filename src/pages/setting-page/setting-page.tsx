@@ -92,6 +92,13 @@ export const SettingPage = () => {
 									></Select>
 								</Form.Item>
 								<Form.Item
+									name={'isFansMedal'}
+									label={'是否显示粉丝勋章'}
+									valuePropName={'checked'}
+								>
+									<Switch></Switch>
+								</Form.Item>
+								<Form.Item
 									name={'isTTS'}
 									label={'是否开启语音'}
 									valuePropName={'checked'}
