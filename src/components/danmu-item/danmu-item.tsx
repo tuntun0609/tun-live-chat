@@ -5,12 +5,6 @@ export enum DanmuType {
 	INFO = 'info',
 }
 
-export type DanmuItem = {
-	key: string,
-	type: DanmuType,
-	data: any,
-}
-
 export const DanmuItem = (props: {danmuData: DanmuItem}) => {
 	const { danmuData } = props;
 	switch (danmuData.type) {

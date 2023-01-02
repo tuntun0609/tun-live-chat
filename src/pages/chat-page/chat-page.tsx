@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { Button } from 'antd';
 
 import { useQuery } from '@utils';
-import { DanmuItem, DanmuType } from '@components';
+import { DanmuList, DanmuType } from '@components';
 
 import './chat-page.scss';
 
@@ -17,14 +17,10 @@ export const ChatPage = () => {
 	const query = useQuery<Setting>();
 	const [danmuList, addDanmu, removeDanmu] = useChatList();
 
-	useEffect(() => {
-		const removeInvisibleDanmuId = setInterval(removeInvisibleDanmu, 100);
-		return () => {
-			if (!isNull(heartbeatId.current)) {
-				onClose();
-			}
-			clearInterval(removeInvisibleDanmuId);
-		};
+	useEffect(() => () => {
+		if (!isNull(heartbeatId.current)) {
+			onClose();
+		}
 	}, []);
 
 	// 信息处理结束后开启websocket
@@ -37,21 +33,6 @@ export const ChatPage = () => {
 			}
 		}
 	}, [query, voicesList]);
-
-	// 移除不可见弹幕
-	const removeInvisibleDanmu = () => {
-		const item: HTMLElement | null = document.querySelector('.danmu-item');
-		const listHeight = document.querySelector('.danmu-list')?.getBoundingClientRect().top ?? 0;
-		if (item) {
-			const top = item.getBoundingClientRect() && item.getBoundingClientRect().top;
-			if (top <= (listHeight + 30)) {
-				item.style.opacity = '0';
-				setTimeout(() => {
-					removeDanmu(item.dataset.id as string);
-				}, 500);
-			}
-		}
-	};
 
 	// tts
 	const onTTS = useCallback(async (word: string | undefined) => {
@@ -158,13 +139,11 @@ export const ChatPage = () => {
 			{/* <Button onClick={() => {
 				onClose();
 			}}>close</Button> */}
-			<div className='danmu-list'>
-				{
-					danmuList.map(item => (
-						<DanmuItem key={item.key} danmuData={item}></DanmuItem>
-					))
-				}
-			</div>
+			<DanmuList
+				data={danmuList}
+				remove={key => removeDanmu(key)}
+				offset={10}
+			></DanmuList>
 		</div>
 	);
 };

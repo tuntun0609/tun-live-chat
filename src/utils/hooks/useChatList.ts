@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { DanmuItem } from '@components';
-
 export const useChatList = (): [
 	DanmuItem[],
 	(item: DanmuItem) => void,
@@ -13,7 +11,6 @@ export const useChatList = (): [
 	const pushDanmuFromPool = () => {
 		let intervalTime = 200;
 		if (danmuPool.current.length > 0) {
-			// console.log(danmuList);
 			intervalTime = Math.min(intervalTime, 1000 / length);
 			const item = danmuPool.current.shift();
 			setDanmuList(prevState => (
