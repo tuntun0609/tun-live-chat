@@ -1,4 +1,4 @@
-@keyframes danmakuIn {
+@keyframes danmuIn {
   from {
     transform: translateX(30px);
     opacity: 0;
@@ -11,13 +11,14 @@
 
 .danmu {
   &-item {
+    min-height: 36px;
     padding: 4px;
     display: flex;
     flex-direction: row;
     align-items: center;
     transition: opacity 0.5s;
     user-select: none;
-    animation: 0.5s danmakuIn;
+    animation: 0.5s danmuIn;
     opacity: 1;
     font-size: 20px;
   }

@@ -14,12 +14,12 @@
 
 .danmu {
   &-list {
-    height: 100%;
-    display: flex;
+    flex-grow: 1;
     overflow: hidden;
-    justify-content: flex-end;
-    flex-direction: column;
     width: 100%;
     scroll-behavior: smooth;
+  }
+  &-list-placeholder {
+    height: 100%;
   }
 }

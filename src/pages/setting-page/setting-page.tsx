@@ -73,7 +73,7 @@ export const SettingPage = () => {
 								>
 									<InputNumber style={{ width: '100%' }} />
 								</Form.Item>
-								<Form.Item
+								{/* <Form.Item
 									name={'direction'}
 									label={'弹幕排列'}
 								>
@@ -90,7 +90,7 @@ export const SettingPage = () => {
 											},
 										]}
 									></Select>
-								</Form.Item>
+								</Form.Item> */}
 								<Form.Item
 									name={'removeDelay'}
 									label={'弹幕移除延迟时间(ms)'}
