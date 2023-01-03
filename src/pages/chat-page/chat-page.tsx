@@ -153,7 +153,7 @@ export const ChatPage = () => {
 			<DanmuList
 				data={danmuList}
 				remove={key => removeDanmu(key)}
-				offset={30}
+				offset={query?.offset}
 				removeDelay={query?.removeDelay}
 			></DanmuList>
 		</div>

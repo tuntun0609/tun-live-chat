@@ -102,6 +102,16 @@ export const SettingPage = () => {
 									/>
 								</Form.Item>
 								<Form.Item
+									name={'offset'}
+									label={'弹幕移除区域偏移(自顶部)'}
+								>
+									<InputNumber
+										min={0}
+										step={10}
+										style={{ width: '100%' }}
+									/>
+								</Form.Item>
+								<Form.Item
 									name={'isFansMedal'}
 									label={'是否显示粉丝勋章'}
 									valuePropName={'checked'}

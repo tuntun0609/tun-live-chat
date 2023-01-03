@@ -6,6 +6,7 @@ type Setting = {
 	isFansMedal?: 'true' | 'false',
 	isDebug?: 'true' | 'false',
 	removeDelay?: string,
+	offset?: string,
 };
 
 type DanmuItem = {
