@@ -67,7 +67,7 @@ export const ChatPage = () => {
 		case 5:
 			packet.body.forEach((body: any)=>{
 				switch (body.cmd) {
-				case 'DANMU_MSG':
+				case DanmuType.DANMU:
 					console.log(body);
 					console.log(`${body.info[2][1]}: ${body.info[1]}`);
 					addDanmu({
@@ -77,15 +77,20 @@ export const ChatPage = () => {
 						isFansMedal: query?.isFansMedal ?? 'false',
 					});
 					break;
-				case 'SEND_GIFT':
+				case DanmuType.GIFT:
 					console.log(`${body.data.uname} ${body.data.action} ${body.data.num} 个 ${body.data.giftName}`);
 					break;
-				case 'WELCOME':
+				case DanmuType.WELCOME:
 					// console.log(`欢迎 ${body.data.uname}`);
 					break;
-				case 'SUPER_CHAT_MESSAGE':
+				case DanmuType.SC:
 					console.log(body.data);
 					console.log(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
+					addDanmu({
+						key: uuid(),
+						type: DanmuType.SC,
+						data: body.data,
+					});
 					onTTS(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
 					break;
 				// 此处省略很多其他通知类型
@@ -142,7 +147,7 @@ export const ChatPage = () => {
 				query?.isDebug === 'true'
 					? <Button onClick={() => {
 						onClose();
-					}}>close</Button>
+					}}>debug</Button>
 					: null
 			}
 			<DanmuList

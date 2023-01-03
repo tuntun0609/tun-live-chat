@@ -1,0 +1,11 @@
+.danmu {
+  &-list {
+    flex-grow: 1;
+    overflow: hidden;
+    width: 100%;
+    scroll-behavior: smooth;
+  }
+  &-list-placeholder {
+    height: 100%;
+  }
+}

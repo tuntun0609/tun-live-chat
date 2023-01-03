@@ -3,6 +3,8 @@ import { useInterval } from 'usehooks-ts';
 
 import { DanmuItem } from '@components';
 
+import './danmu-list.scss';
+
 export const DanmuList = ({data, remove, offset = 30, removeDelay = 300}: {
 	data: DanmuItem[];
 	remove: (key: string) => void;
@@ -32,6 +34,13 @@ export const DanmuList = ({data, remove, offset = 30, removeDelay = 300}: {
 			listRef.current.scrollTop = listRef.current?.scrollHeight;
 		}
 	};
+
+	useEffect(() => {
+		window.addEventListener('resize', scrollList);
+		return () => {
+			window.removeEventListener('resize', scrollList);
+		};
+	}, []);
 
 	useEffect(() => {
 		scrollList();

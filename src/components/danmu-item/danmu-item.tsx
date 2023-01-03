@@ -1,13 +1,20 @@
 import { useMemo } from 'react';
 
+import { dec2hex } from '@utils';
+
 import ship1Icon from '../../assets/ship-1.png';
 import ship2Icon from '../../assets/ship-2.png';
 import ship3Icon from '../../assets/ship-3.png';
 import './danmu-item.scss';
 
 export enum DanmuType {
-	DANMU = 'danmu',
+	DANMU = 'DANMU_MSG',
 	INFO = 'info',
+	SC = 'SUPER_CHAT_MESSAGE',
+	SC_JAPAN = 'SUPER_CHAT_MESSAGE_JPN',
+	WELCOME = 'WELCOME',
+	GIFT = 'SEND_GIFT',
+	SHIP = 'GUARD_BUY',
 }
 
 // 粉丝勋章
@@ -60,34 +67,78 @@ const FansMedal = ({data}: {data: any}) => {
 	);
 };
 
-// 十进制颜色值转十六进制
-const dec2hex = (dec: number) => {
-	let hex = dec.toString(16);
-	for (let i = hex.length; i < 6; i++) {
-		hex += '0';
-	}
-	return hex;
-};
+// 普通消息
+const MsgItem = ({data}: {data: DanmuItem}) => (
+	<div
+		data-id={data.key}
+		className='danmu-item danmu-msg'
+	>
+		{
+			data.isFansMedal === 'true'
+			&& data.data[3]?.length !== 0
+			&& data.data[3]?.[11] === 1
+				? <FansMedal data={data.data?.[3]}></FansMedal>
+				: null
+		}
+		<div className='danmu-msg-name with-colon'>
+			{data.data?.[2]?.[1]}
+		</div>
+		<div className='danmu-msg-message'>
+			{data.data?.[1]}
+		</div>
+	</div>
+);
+
+// sc消息
+const ScItem = ({data}: {data: DanmuItem}) => (
+	<div
+		data-id={data.key}
+		className={'danmu-item danmu-sc'}
+	>
+		<div className='danmu-sc-header'
+			style={{
+				border: `1px solid ${data.data?.background_bottom_color}`,
+				backgroundColor: data.data?.background_color,
+			}}
+		>
+			<div className='danmu-sc-header-name'
+				style={{
+					color: data.data?.user_info.name_color,
+				}}
+			>
+				{data.data?.user_info.uname}
+			</div>
+			<div className='danmu-sc-header-price'
+				style={{
+					color: data.data?.background_price_color,
+				}}
+			>
+				{data.data?.price}
+			</div>
+		</div>
+		<div className='danmu-sc-msg'
+			style={{
+				backgroundColor: data.data?.background_bottom_color,
+			}}
+		>
+			{data.data?.message}
+		</div>
+	</div>
+);
 
 export const DanmuItem = (props: {danmuData: DanmuItem}) => {
 	const { danmuData } = props;
 	switch (danmuData.type) {
+	// 普通弹幕
 	case DanmuType.DANMU:
 		return (
-			<div data-id={danmuData.key} className='danmu-item danmu-msg'>
-				{
-					danmuData.isFansMedal === 'true'
-					&& danmuData.data[3]?.length !== 0
-					&& danmuData.data[3]?.[11] === 1
-						? <FansMedal data={danmuData.data[3]}></FansMedal>
-						: null
-				}
-				<div className='danmu-msg-name with-colon'>{danmuData.data[2][1]}</div>
-				<div className='danmu-msg-message'>{danmuData.data[1]}</div>
-			</div>
+			<MsgItem data={danmuData}></MsgItem>
 		);
+	// 通知信息
 	case DanmuType.INFO:
 		return <div data-id={danmuData.key} className='danmu-item danmu-info'>{danmuData.data.info}</div>;
+	case DanmuType.SC:
+		return <ScItem data={danmuData}></ScItem>;
 	default:
 		return null;
 	}

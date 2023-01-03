@@ -11,19 +11,19 @@
 
 .danmu {
   &-item {
-    min-height: 36px;
-    padding: 4px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    padding: 4px 6px;
     transition: opacity 0.5s;
     user-select: none;
-    animation: 0.5s danmuIn;
     opacity: 1;
     font-size: 20px;
   }
 
   &-msg {
+    min-height: 36px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    animation: 0.5s danmuIn;
     flex-wrap: wrap;
     text-shadow: -2px -2px #000000, -2px -1px #000000, -2px 0 #000000, -2px 1px #000000, -2px 2px #000000,
       -1px -2px #000000, -1px -1px #000000, -1px 0 #000000, -1px 1px #000000, -1px 2px #000000, 0 -2px #000000,
@@ -41,6 +41,53 @@
     &-message {
       color: #fff;
     }
+  }
+
+  &-sc {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid #2A60B2;
+      background-color: #EDF5FF;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      &-name {
+        color: #666666;
+      }
+      &-price {
+        color: #7497CD;
+        &::before {
+          content: '￥';
+        }
+      }
+    }
+    &-msg {
+      padding: 12px;
+      color: #fff;
+      background-color: #2A60B2;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+    }
+  }
+
+  &-info {
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    animation: 0.5s danmuIn;
+    color: #fff;
+    text-shadow: -2px -2px #000000, -2px -1px #000000, -2px 0 #000000, -2px 1px #000000, -2px 2px #000000,
+      -1px -2px #000000, -1px -1px #000000, -1px 0 #000000, -1px 1px #000000, -1px 2px #000000, 0 -2px #000000,
+      0 -1px #000000, 0 0 #000000, 0 1px #000000, 0 2px #000000, 1px -2px #000000, 1px -1px #000000, 1px 0 #000000,
+      1px 1px #000000, 1px 2px #000000, 2px -2px #000000, 2px -1px #000000, 2px 0 #000000, 2px 1px #000000,
+      2px 2px #000000;
+    
   }
 }
 
