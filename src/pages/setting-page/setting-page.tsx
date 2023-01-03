@@ -98,6 +98,7 @@ export const SettingPage = () => {
 									<InputNumber
 										min={0}
 										step={100}
+										placeholder={'默认300'}
 										style={{ width: '100%' }}
 									/>
 								</Form.Item>
@@ -108,6 +109,18 @@ export const SettingPage = () => {
 									<InputNumber
 										min={0}
 										step={10}
+										placeholder={'默认30'}
+										style={{ width: '100%' }}
+									/>
+								</Form.Item>
+								<Form.Item
+									name={'speed'}
+									label={'弹幕速度'}
+								>
+									<InputNumber
+										min={1}
+										max={100}
+										placeholder={'每秒添加多少条弹幕，默认 5条/秒'}
 										style={{ width: '100%' }}
 									/>
 								</Form.Item>

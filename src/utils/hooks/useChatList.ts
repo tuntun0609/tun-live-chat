@@ -1,26 +1,23 @@
-import { useEffect, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { useInterval } from 'usehooks-ts';
 
-export const useChatList = (): [
+export const useChatList = (time: number | undefined): [
 	DanmuItem[],
 	(item: DanmuItem) => void,
 	(key: string) => DanmuItem | undefined,
 ] => {
+	const intervalTime = useMemo(() => 1000 / (time ?? 5), [time]);
 	const danmuPool = useRef<DanmuItem[]>([]);
 	const [danmuList, setDanmuList] = useState<DanmuItem[]>([]);
 
-	const pushDanmuFromPool = () => {
-		let intervalTime = 200;
+	useInterval(() => {
 		if (danmuPool.current.length > 0) {
-			intervalTime = Math.min(intervalTime, 1000 / length);
 			const item = danmuPool.current.shift();
 			setDanmuList(prevState => (
 				[...prevState, item as DanmuItem]
 			));
 		}
-		if (window.location.pathname === '/chat') {
-			setTimeout(pushDanmuFromPool, intervalTime);
-		}
-	};
+	}, intervalTime);
 
 	const removeDanmu = (key: string) => {
 		const removeItem = danmuList.find(item => item.key === key);
@@ -29,10 +26,6 @@ export const useChatList = (): [
 		));
 		return removeItem;
 	};
-
-	useEffect(() => {
-		pushDanmuFromPool();
-	}, []);
 
 	const addDanmu = (item: DanmuItem) => {
 		danmuPool.current.push(item);

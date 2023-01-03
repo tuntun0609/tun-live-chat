@@ -1,6 +1,6 @@
 import { isStrNumber } from './index';
 
-export const str2num = (text: string | number) => {
+export const str2num = (text: string | number | undefined) => {
 	if (typeof text === 'string') {
 		if (isStrNumber(text)) {
 			return parseInt(text, 10);

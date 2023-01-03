@@ -6,7 +6,12 @@ import { DanmuItem } from '@components';
 import './danmu-list.scss';
 import { str2num } from '@utils';
 
-export const DanmuList = ({data, remove, offset = 30, removeDelay = 300}: {
+export const DanmuList = ({
+	data,
+	remove,
+	offset = 30,
+	removeDelay = 300,
+}: {
 	data: DanmuItem[];
 	remove: (key: string) => void;
 	offset?: number | string;
@@ -48,7 +53,7 @@ export const DanmuList = ({data, remove, offset = 30, removeDelay = 300}: {
 
 	useInterval(() => {
 		removeInvisibleDanmu();
-	}, 100);
+	}, 50);
 
 	return (
 		<div className='danmu-list' ref={listRef}>

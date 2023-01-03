@@ -7,6 +7,7 @@ type Setting = {
 	isDebug?: 'true' | 'false',
 	removeDelay?: string,
 	offset?: string,
+	speed?: string,
 };
 
 type DanmuItem = {

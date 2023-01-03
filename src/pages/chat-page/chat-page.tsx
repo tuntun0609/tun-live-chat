@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { decode, encode, useChatList, useSpeechSynthesisVoices } from '@utils';
+import { decode, encode, str2num, useChatList, useSpeechSynthesisVoices } from '@utils';
 import { useCallback, useEffect, useRef } from 'react';
 import { isUndefined, isNull } from 'lodash';
 import { v4 as uuid } from 'uuid';
@@ -15,7 +15,7 @@ export const ChatPage = () => {
 	const heartbeatId = useRef<number | undefined | null>(null);
 	const voicesList = useSpeechSynthesisVoices();
 	const query = useQuery<Setting>();
-	const [danmuList, addDanmu, removeDanmu] = useChatList();
+	const [danmuList, addDanmu, removeDanmu] = useChatList(str2num(query?.speed));
 
 	useEffect(() => () => {
 		if (!isNull(heartbeatId.current)) {
