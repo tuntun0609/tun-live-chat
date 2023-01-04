@@ -6,7 +6,7 @@ import qs from 'qs';
 import { isEmpty, isUndefined } from 'lodash';
 
 import './setting-page.scss';
-import { useSpeechSynthesisVoices } from '@utils';
+import { removeEmptyField, useSpeechSynthesisVoices } from '@utils';
 import { SettingPageTitle, GithubStarIcon } from '@components';
 
 export const SettingPage = () => {
@@ -30,9 +30,10 @@ export const SettingPage = () => {
 	}, [isTTS]);
 
 	const onStart = useCallback((values: Setting) => {
-		console.log(values);
-		setSettingData(values);
-		navigate(`/chat?${qs.stringify(values)}`);
+		const query = removeEmptyField(values);
+		console.log(query);
+		setSettingData(query);
+		navigate(`/chat?${qs.stringify(query)}`);
 	}, []);
 
 	return (

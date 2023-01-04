@@ -4,4 +4,5 @@ export * from './tts';
 export * from './hooks';
 export * from './dec2hex';
 export * from './str2num';
-export * from './isStrNumber';
+export * from './is-str-number';
+export * from './remove-empty-field';
