@@ -11,7 +11,7 @@
 
 .danmu {
   &-item {
-    padding: 4px 6px;
+    padding: 6px 6px;
     transition: opacity 0.5s;
     user-select: none;
     opacity: 1;
@@ -19,7 +19,6 @@
   }
 
   &-msg {
-    min-height: 36px;
     display: flex;
     flex-direction: row;
     align-items: center;
