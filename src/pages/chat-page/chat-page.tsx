@@ -111,7 +111,7 @@ export const ChatPage = () => {
 		// console.log(data.data);
 
 		// ws.current = new WebSocket(`ws://${data.data.host_list[0].host}:${data.data.host_list[0].ws_port}/sub`);
-		ws.current = new WebSocket('ws://broadcastlv.chat.bilibili.com:2244/sub');
+		ws.current = new WebSocket('wss://broadcastlv.chat.bilibili.com/sub');
 		ws.current.onopen = () => {
 			console.log('Connection open ...');
 			addDanmu({
