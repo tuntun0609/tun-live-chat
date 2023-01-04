@@ -108,7 +108,6 @@ export const SettingPage = () => {
 									label={'弹幕移除区域偏移(自顶部)'}
 								>
 									<InputNumber
-										min={0}
 										step={10}
 										placeholder={`默认${DEFAULT_OFFSET}`}
 										style={{ width: '100%' }}
