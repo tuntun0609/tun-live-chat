@@ -1,12 +1,14 @@
 import { useMemo, useRef, useState } from 'react';
 import { useInterval } from 'usehooks-ts';
 
+import { DEFAULT_DANMU_SPEED } from '../DEFAULT_VALUES';
+
 export const useChatList = (time?: number): [
 	DanmuItem[],
 	(item: DanmuItem) => void,
 	(key: string) => DanmuItem | undefined,
 ] => {
-	const intervalTime = useMemo(() => 1000 / (time ?? 5), [time]);
+	const intervalTime = useMemo(() => 1000 / (time ?? DEFAULT_DANMU_SPEED), [time]);
 	const danmuPool = useRef<DanmuItem[]>([]);
 	const [danmuList, setDanmuList] = useState<DanmuItem[]>([]);
 

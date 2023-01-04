@@ -4,13 +4,13 @@ import { useInterval } from 'usehooks-ts';
 import { DanmuItem } from '@components';
 
 import './danmu-list.scss';
-import { str2num } from '@utils';
+import { str2num, DEFAULT_REMOVE_DELAY, DEFAULT_OFFSET } from '@utils';
 
 export const DanmuList = ({
 	data,
 	remove,
-	offset = 30,
-	removeDelay = 300,
+	offset = DEFAULT_OFFSET,
+	removeDelay = DEFAULT_REMOVE_DELAY,
 }: {
 	data: DanmuItem[];
 	remove: (key: string) => void;
@@ -24,11 +24,11 @@ export const DanmuList = ({
 		const listHeight = listRef.current?.getBoundingClientRect().top ?? 0;
 		if (firstChildren) {
 			const top = firstChildren.getBoundingClientRect() && firstChildren.getBoundingClientRect().top;
-			if (top <= (listHeight + (str2num(offset) ?? 30))) {
+			if (top <= (listHeight + (str2num(offset) ?? DEFAULT_OFFSET))) {
 				firstChildren.style.opacity = '0';
 				setTimeout(() => {
 					remove(firstChildren.dataset.id as string);
-				}, str2num(removeDelay) ?? 0);
+				}, str2num(removeDelay) ?? DEFAULT_REMOVE_DELAY);
 			}
 		}
 	};

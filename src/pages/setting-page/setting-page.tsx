@@ -6,7 +6,7 @@ import qs from 'qs';
 import { isEmpty, isUndefined } from 'lodash';
 
 import './setting-page.scss';
-import { removeEmptyField, useSpeechSynthesisVoices } from '@utils';
+import { DEFAULT_DANMU_SPEED, DEFAULT_OFFSET, DEFAULT_REMOVE_DELAY, removeEmptyField, useSpeechSynthesisVoices } from '@utils';
 import { SettingPageTitle, GithubStarIcon } from '@components';
 
 export const SettingPage = () => {
@@ -99,7 +99,7 @@ export const SettingPage = () => {
 									<InputNumber
 										min={0}
 										step={100}
-										placeholder={'默认300'}
+										placeholder={`默认${DEFAULT_REMOVE_DELAY}`}
 										style={{ width: '100%' }}
 									/>
 								</Form.Item>
@@ -110,7 +110,7 @@ export const SettingPage = () => {
 									<InputNumber
 										min={0}
 										step={10}
-										placeholder={'默认30'}
+										placeholder={`默认${DEFAULT_OFFSET}`}
 										style={{ width: '100%' }}
 									/>
 								</Form.Item>
@@ -121,7 +121,7 @@ export const SettingPage = () => {
 									<InputNumber
 										min={1}
 										max={1000}
-										placeholder={'每秒添加多少条弹幕 默认5条/秒 范围1~1000 过低可能造成弹幕延迟'}
+										placeholder={`每秒添加多少条弹幕 默认${DEFAULT_DANMU_SPEED}条/秒 范围1~1000 过低可能造成弹幕延迟`}
 										style={{ width: '100%' }}
 									/>
 								</Form.Item>

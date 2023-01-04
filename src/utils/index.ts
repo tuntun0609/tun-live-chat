@@ -6,3 +6,4 @@ export * from './dec2hex';
 export * from './str2num';
 export * from './is-str-number';
 export * from './remove-empty-field';
+export * from './DEFAULT_VALUES';
