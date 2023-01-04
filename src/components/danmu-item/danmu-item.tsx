@@ -80,7 +80,12 @@ const MsgItem = ({data}: {data: DanmuItem}) => (
 				? <FansMedal data={data.data?.[3]}></FansMedal>
 				: null
 		}
-		<div className='danmu-msg-name with-colon'>
+		<div
+			className='danmu-msg-name with-colon'
+			style={{
+				color: data.data?.[2]?.[2] === 0 ? '#fb7299' : '#FFB027',
+			}}
+		>
 			{data.data?.[2]?.[1]}
 		</div>
 		<div className='danmu-msg-message'>

@@ -119,8 +119,8 @@ export const SettingPage = () => {
 								>
 									<InputNumber
 										min={1}
-										max={100}
-										placeholder={'每秒添加多少条弹幕，默认 5条/秒'}
+										max={1000}
+										placeholder={'每秒添加多少条弹幕 默认5条/秒 范围1~1000 过低可能造成弹幕延迟'}
 										style={{ width: '100%' }}
 									/>
 								</Form.Item>

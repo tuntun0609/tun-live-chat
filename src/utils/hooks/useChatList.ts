@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
 import { useInterval } from 'usehooks-ts';
 
-export const useChatList = (time: number | undefined): [
+export const useChatList = (time?: number): [
 	DanmuItem[],
 	(item: DanmuItem) => void,
 	(key: string) => DanmuItem | undefined,
