@@ -74,7 +74,7 @@ const MsgItem = ({data}: {data: DanmuItem}) => (
 		className='danmu-item danmu-msg'
 	>
 		{
-			data.isFansMedal === 'true'
+			data.setting?.isFansMedal === 'true'
 			&& data.data[3]?.length !== 0
 			&& data.data[3]?.[11] === 1
 				? <FansMedal data={data.data?.[3]}></FansMedal>

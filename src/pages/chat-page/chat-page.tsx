@@ -74,7 +74,7 @@ export const ChatPage = () => {
 						key: uuid(),
 						type: DanmuType.DANMU,
 						data: body.info,
-						isFansMedal: query?.isFansMedal ?? 'false',
+						setting: query,
 					});
 					break;
 				case DanmuType.GIFT:
@@ -90,6 +90,7 @@ export const ChatPage = () => {
 						key: uuid(),
 						type: DanmuType.SC,
 						data: body.data,
+						setting: query,
 					});
 					onTTS(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
 					break;

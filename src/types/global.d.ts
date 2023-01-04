@@ -8,11 +8,13 @@ type Setting = {
 	removeDelay?: string,
 	offset?: string,
 	speed?: string,
+	nameColor?: string,
 };
 
 type DanmuItem = {
 	key: string,
 	type: DanmuType,
 	data: any,
+	setting?: Setting,
 	isFansMedal?: 'true' | 'false',
 };
