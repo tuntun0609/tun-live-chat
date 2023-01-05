@@ -83,7 +83,7 @@ const MsgItem = ({data}: {data: DanmuItem}) => (
 		<div
 			className='danmu-msg-name with-colon'
 			style={{
-				color: data.data?.[2]?.[2] === 0 ? '#fb7299' : '#FFB027',
+				color: data.data?.[2]?.[2] === 0 ? data.setting?.nameColor : '#FFB027',
 			}}
 		>
 			{data.data?.[2]?.[1]}

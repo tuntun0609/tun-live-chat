@@ -1,17 +1,18 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
 	Button, Card, Col,
-	Form, InputNumber, Row,
+	Form, Input, InputNumber, Row,
 	Select, Switch, message,
 } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import qs from 'qs';
 import { isEmpty, isUndefined } from 'lodash';
+import { ChromePicker } from 'react-color';
 
 import './setting-page.scss';
 import {
-	DEFAULT_DANMU_SPEED, DEFAULT_OFFSET, DEFAULT_REMOVE_DELAY,
+	DEFAULT_DANMU_SPEED, DEFAULT_NAME_COLOR, DEFAULT_OFFSET, DEFAULT_REMOVE_DELAY,
 	copyDataToClipboard, removeEmptyField, useSpeechSynthesisVoices,
 } from '@utils';
 import { SettingPageTitle, GithubStarIcon } from '@components';
@@ -21,12 +22,17 @@ export const SettingPage = () => {
 	const [form] = Form.useForm<Setting>();
 	const isTTS = Form.useWatch('isTTS', form);
 	const voice = Form.useWatch('voice', form);
-	const [settingData, setSettingData] = useLocalStorage('setting', {});
+	const [settingData, setSettingData] = useLocalStorage<any>('setting', {});
 	const navigate = useNavigate();
+	const [nameColor, setNameColor] = useState(DEFAULT_NAME_COLOR);
+	const [isColorPickerShow, setIsColorPickerShow] = useState(false);
 
 	useEffect(() => {
 		if (!isEmpty(settingData)) {
 			form.setFieldsValue(settingData);
+		}
+		if (settingData.nameColor) {
+			setNameColor(settingData.nameColor);
 		}
 	}, [settingData]);
 
@@ -95,6 +101,7 @@ export const SettingPage = () => {
 								onFinish={onStart}
 								initialValues={{
 									isCors: 'false',
+									nameColor: DEFAULT_NAME_COLOR,
 								} as Setting}
 							>
 								{/* 房间号 */}
@@ -179,6 +186,54 @@ export const SettingPage = () => {
 										placeholder={`每秒添加多少条弹幕 默认${DEFAULT_DANMU_SPEED}条/秒 范围1~1000 过低可能造成弹幕延迟`}
 										style={{ width: '100%' }}
 									/>
+								</Form.Item>
+								{/* 用户名称颜色 */}
+								<Form.Item
+									label={'用户名称颜色'}
+								>
+									<Form.Item
+										name={'nameColor'}
+										noStyle
+									>
+										<Input
+											prefix={
+												<div style={{
+													width: '16px',
+													height: '16px',
+													backgroundColor: nameColor,
+													borderRadius: '4px',
+												}}></div>}
+											placeholder={'名称颜色'}
+											style={{ width: '100px' }}
+											onChange={e => setNameColor(e.target.value)}
+										/>
+									</Form.Item>
+									<Form.Item noStyle>
+										<Button
+											style={{ marginLeft: '10px' }}
+											onClick={() => setIsColorPickerShow(!isColorPickerShow)}
+										>选择颜色</Button>
+									</Form.Item>
+									{
+										isColorPickerShow
+											? <div
+												style={{
+													position: 'absolute',
+													zIndex: '2',
+													top: 40,
+													left: 20,
+												}}
+											>
+												<ChromePicker
+													color={nameColor}
+													onChangeComplete={(color: any) => {
+														setNameColor(color.hex);
+														form.setFieldValue('nameColor', color.hex);
+													}}
+												></ChromePicker>
+											</div>
+											: null
+									}
 								</Form.Item>
 								{/* 是否显示粉丝勋章 */}
 								<Form.Item
