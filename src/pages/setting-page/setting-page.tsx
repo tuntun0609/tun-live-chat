@@ -69,31 +69,14 @@ export const SettingPage = () => {
 	};
 
 	return (
-		<div
-			style={{
-				width: '100%',
-				minHeight: '100%',
-				display: 'flex',
-				justifyContent: 'center',
-				alignItems: 'center',
-				flexDirection: 'column',
-			}}
-		>
-			<div
-				style={{
-					width: '100%',
-					padding: '20px 0',
-				}}
-			>
+		<div className='main'>
+			<div className='main-body'>
 				<Row gutter={8} justify='center'>
 					<Col xs={20} sm={16} md={12} lg={12} xl={12} xxl={8}>
 						<Card
 							title={<SettingPageTitle />}
 							extra={<GithubStarIcon />}
-							style={{
-								width: '100%',
-								boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
-							}}
+							className='main-card'
 						>
 							<Form
 								form={form}
@@ -216,14 +199,11 @@ export const SettingPage = () => {
 									</Form.Item>
 									{
 										isColorPickerShow
-											? <div
-												style={{
-													position: 'absolute',
-													zIndex: '2',
-													top: 40,
-													left: 20,
-												}}
-											>
+											? <div className='color-picker-popover'>
+												<div
+													className='color-picker-cover'
+													onClick={() => setIsColorPickerShow(false)}
+												></div>
 												<ChromePicker
 													color={nameColor}
 													onChangeComplete={(color: any) => {
