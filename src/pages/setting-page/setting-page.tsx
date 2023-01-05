@@ -1,5 +1,9 @@
 import { useCallback, useEffect } from 'react';
-import { Button, Card, Col, Form, InputNumber, Row, Select, Switch } from 'antd';
+import {
+	Button, Card, Col,
+	Form, InputNumber, Row,
+	Select, Switch, message,
+} from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import qs from 'qs';
@@ -40,17 +44,21 @@ export const SettingPage = () => {
 	}, []);
 
 	const copyUrl = () => {
-		console.log(form.getFieldsValue(true));
-		const query = removeEmptyField(form.getFieldsValue(true));
-		const url = `${window.location.origin}/chat?${qs.stringify(query)}`;
-		copyDataToClipboard(url);
+		try {
+			const query = removeEmptyField(form.getFieldsValue(true));
+			const url = `${window.location.origin}/chat?${qs.stringify(query)}`;
+			copyDataToClipboard(url);
+			message.success('复制url成功');
+		} catch (error) {
+			message.error('复制url失败');
+		}
 	};
 
 	return (
 		<div
 			style={{
 				width: '100%',
-				height: '100%',
+				minHeight: '100%',
 				display: 'flex',
 				justifyContent: 'center',
 				alignItems: 'center',
@@ -60,6 +68,7 @@ export const SettingPage = () => {
 			<div
 				style={{
 					width: '100%',
+					padding: '20px 0',
 				}}
 			>
 				<Row gutter={8} justify='center'>
