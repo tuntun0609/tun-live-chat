@@ -1,34 +1,40 @@
+import qs from 'qs';
+
+const corsUrl = 'https://api.codetabs.com/v1/proxy/?quest=';
+
 // 封装get方法
-export const get = async (props: { url: any; params?: any; options?: any; }) => {
-	const { url: baseUrl, params = {}, options = {} } = props;
-	const pStr = Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
-	const url = `${baseUrl}${pStr !== '' ? '?' : ''}${pStr}`;
-	return fetch(`https://api.codetabs.com/v1/proxy/?quest=${url}`, {
+export const get = async (props: { url: any; query?: any; cors?: boolean; options?: any; }) => {
+	const { url: baseUrl, query = {}, options = {}, cors = false } = props;
+	const queryStr = qs.stringify(query);
+	const url = `${baseUrl}${queryStr !== '' ? '?' : ''}${queryStr}`;
+	return fetch(`${cors ? '' : corsUrl}${url}`, {
 		...options,
 	}).then(r => r.json());
 };
 
 // 弹幕信息源
-export const getDanmuInfo = async (roomid: number) => {
+export const getDanmuInfo = async (roomid: number, cors?: boolean) => {
 	const baseUrl = 'https://api.live.bilibili.com/xlive/web-room/v1/index/getDanmuInfo';
 	const paramsData = {
 		id: roomid,
 	};
 	return get({
 		url: baseUrl,
-		params: {
+		query: {
 			...paramsData,
 		},
+		cors,
 	});
 };
 
 // 获取房间信息
-export const getRoomInfo = async (roomid: number) => {
+export const getRoomInfo = async (roomid: number, cors?: boolean) => {
 	const baseUrl = 'https://api.live.bilibili.com/room/v1/Room/get_info';
 	return get({
 		url: baseUrl,
-		params: {
+		query: {
 			id: roomid,
 		},
+		cors,
 	});
 };

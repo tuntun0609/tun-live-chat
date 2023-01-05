@@ -9,6 +9,7 @@ type Setting = {
 	offset?: string,
 	speed?: string,
 	nameColor?: string,
+	isCors?: 'true' | 'false',
 };
 
 type DanmuItem = {

@@ -66,13 +66,37 @@ export const SettingPage = () => {
 								form={form}
 								name={'setting'}
 								onFinish={onStart}
+								initialValues={{
+									isCors: 'false',
+								} as Setting}
 							>
 								<Form.Item
 									name='roomid'
 									label={'房间号'}
 									rules={[{ required: true, message: '必须输入房间号' }]}
 								>
-									<InputNumber style={{ width: '100%' }} />
+									<InputNumber
+										placeholder={'支持直播间短号'}
+										style={{ width: '100%' }}
+									/>
+								</Form.Item>
+								<Form.Item
+									name={'isCors'}
+									label={'是否跨域'}
+								>
+									<Select
+										style={{ width: '100%' }}
+										options={[
+											{
+												value: 'true',
+												label: '开启(导入obs并关闭安全机制后建议选择此项)',
+											},
+											{
+												value: 'false',
+												label: '关闭',
+											},
+										]}
+									></Select>
 								</Form.Item>
 								{/* <Form.Item
 									name={'direction'}

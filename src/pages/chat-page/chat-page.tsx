@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { decode, encode, str2num, useChatList, useSpeechSynthesisVoices } from '@utils';
+import { api, decode, encode, str2num, useChatList, useSpeechSynthesisVoices } from '@utils';
 import { useCallback, useEffect, useRef } from 'react';
 import { isUndefined, isNull } from 'lodash';
 import { v4 as uuid } from 'uuid';
@@ -28,7 +28,7 @@ export const ChatPage = () => {
 		if (!isUndefined(query) && !isUndefined(voicesList)) {
 			console.log(query);
 			if (query.roomid !== undefined && ws.current?.readyState !== 1) {
-				onConnect(query);
+				onConnect();
 			} else {
 				console.error('错误');
 			}
@@ -107,9 +107,40 @@ export const ChatPage = () => {
 	};
 
 	// 连接
-	const onConnect = async (setting: Setting) => {
-		// const data = await api.getDanmuInfo(23197314);
-		// console.log(data.data);
+	const onConnect = async () => {
+		addDanmu({
+			key: uuid(),
+			type: DanmuType.INFO,
+			data: {
+				info: '正在获取房间信息...',
+			},
+		});
+		let roomInfo: {
+			[key: string]: any,
+		} = {};
+		try {
+			roomInfo = await api.getRoomInfo(
+				parseInt(query?.roomid ?? '0', 10),
+				query?.isCors === 'true' ? true : false,
+			);
+			console.log(roomInfo.data);
+			addDanmu({
+				key: uuid(),
+				type: DanmuType.INFO,
+				data: {
+					info: '获取房间信息成功！',
+				},
+			});
+		} catch (error) {
+			addDanmu({
+				key: uuid(),
+				type: DanmuType.INFO,
+				data: {
+					info: '获取房间信息失败，请重试 :(',
+				},
+			});
+			return;
+		}
 
 		// ws.current = new WebSocket(`ws://${data.data.host_list[0].host}:${data.data.host_list[0].ws_port}/sub`);
 		ws.current = new WebSocket('wss://broadcastlv.chat.bilibili.com/sub');
@@ -124,7 +155,7 @@ export const ChatPage = () => {
 			});
 			ws.current?.send(encode(JSON.stringify({
 				uid: 0,
-				roomid: parseInt(setting.roomid as string, 10),
+				roomid: roomInfo.data.room_id as number,
 				platform: 'web',
 				type: 2,
 			}), 7));
