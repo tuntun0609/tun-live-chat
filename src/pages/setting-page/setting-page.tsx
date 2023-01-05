@@ -20,6 +20,7 @@ export const SettingPage = () => {
 	const voicesList = useSpeechSynthesisVoices();
 	const [form] = Form.useForm<Setting>();
 	const isTTS = Form.useWatch('isTTS', form);
+	const voice = Form.useWatch('voice', form);
 	const [settingData, setSettingData] = useLocalStorage('setting', {});
 	const navigate = useNavigate();
 
@@ -52,6 +53,13 @@ export const SettingPage = () => {
 		} catch (error) {
 			message.error('复制url失败');
 		}
+	};
+
+	const testTTS = () => {
+		const msg = new SpeechSynthesisUtterance('这是一段测试语音');
+		const index = voicesList?.findIndex(item => item.name === voice) ?? -1;
+		msg.voice = voicesList?.[index] ?? null;
+		speechSynthesis.speak(msg);
 	};
 
 	return (
@@ -89,6 +97,7 @@ export const SettingPage = () => {
 									isCors: 'false',
 								} as Setting}
 							>
+								{/* 房间号 */}
 								<Form.Item
 									name='roomid'
 									label={'房间号'}
@@ -99,6 +108,7 @@ export const SettingPage = () => {
 										style={{ width: '100%' }}
 									/>
 								</Form.Item>
+								{/* 跨域 */}
 								<Form.Item
 									name={'isCors'}
 									label={'是否跨域'}
@@ -135,6 +145,7 @@ export const SettingPage = () => {
 										]}
 									></Select>
 								</Form.Item> */}
+								{/* 弹幕移除延迟时间 */}
 								<Form.Item
 									name={'removeDelay'}
 									label={'弹幕移除延迟时间(ms)'}
@@ -146,6 +157,7 @@ export const SettingPage = () => {
 										style={{ width: '100%' }}
 									/>
 								</Form.Item>
+								{/* 弹幕移除区域偏移 */}
 								<Form.Item
 									name={'offset'}
 									label={'弹幕移除区域偏移(自顶部)'}
@@ -156,6 +168,7 @@ export const SettingPage = () => {
 										style={{ width: '100%' }}
 									/>
 								</Form.Item>
+								{/* 弹幕速度 */}
 								<Form.Item
 									name={'speed'}
 									label={'弹幕速度'}
@@ -167,6 +180,7 @@ export const SettingPage = () => {
 										style={{ width: '100%' }}
 									/>
 								</Form.Item>
+								{/* 是否显示粉丝勋章 */}
 								<Form.Item
 									name={'isFansMedal'}
 									label={'是否显示粉丝勋章'}
@@ -174,29 +188,42 @@ export const SettingPage = () => {
 								>
 									<Switch></Switch>
 								</Form.Item>
+								{/* 是否开启语音 */}
 								<Form.Item
 									name={'isTTS'}
-									label={'是否开启语音'}
+									label={'是否开启语音(导入obs不建议开启)'}
 									valuePropName={'checked'}
 								>
 									<Switch></Switch>
 								</Form.Item>
-								{
-									isTTS
-										? <Form.Item
-											name={'voice'}
-											label={'自动阅读语音'}
+								{/* 自动阅读语音 */}
+								<Form.Item label={'自动阅读语音'}>
+									<Form.Item
+										noStyle
+										name={'voice'}
+									>
+										<Select
+											disabled={!isTTS ?? true}
+											style={{ width: 'calc(100% - 72px)' }}
+											options={voicesList?.map(voice => ({
+												value: voice.name,
+												label: voice.name,
+											}))}
+										></Select>
+									</Form.Item>
+									<Form.Item noStyle>
+										<Button
+											style={{
+												marginLeft: '8px',
+											}}
+											disabled={!isTTS ?? true}
+											onClick={testTTS}
 										>
-											<Select
-												style={{ width: '100%' }}
-												options={voicesList?.map(voice => ({
-													value: voice.name,
-													label: voice.name,
-												}))}
-											></Select>
-										</Form.Item>
-										: null
-								}
+											试听
+										</Button>
+									</Form.Item>
+								</Form.Item>
+								{/* 复制url */}
 								<Form.Item>
 									<Button
 										style={{ width: '100%' }}
@@ -205,6 +232,7 @@ export const SettingPage = () => {
                     仅复制url
 									</Button>
 								</Form.Item>
+								{/* 启动 */}
 								<Form.Item>
 									<Button
 										style={{ width: '100%' }}
