@@ -6,7 +6,10 @@ import qs from 'qs';
 import { isEmpty, isUndefined } from 'lodash';
 
 import './setting-page.scss';
-import { DEFAULT_DANMU_SPEED, DEFAULT_OFFSET, DEFAULT_REMOVE_DELAY, removeEmptyField, useSpeechSynthesisVoices } from '@utils';
+import {
+	DEFAULT_DANMU_SPEED, DEFAULT_OFFSET, DEFAULT_REMOVE_DELAY,
+	copyDataToClipboard, removeEmptyField, useSpeechSynthesisVoices,
+} from '@utils';
 import { SettingPageTitle, GithubStarIcon } from '@components';
 
 export const SettingPage = () => {
@@ -35,6 +38,13 @@ export const SettingPage = () => {
 		setSettingData(query);
 		navigate(`/chat?${qs.stringify(query)}`);
 	}, []);
+
+	const copyUrl = () => {
+		console.log(form.getFieldsValue(true));
+		const query = removeEmptyField(form.getFieldsValue(true));
+		const url = `${window.location.origin}/chat?${qs.stringify(query)}`;
+		copyDataToClipboard(url);
+	};
 
 	return (
 		<div
@@ -178,6 +188,14 @@ export const SettingPage = () => {
 										</Form.Item>
 										: null
 								}
+								<Form.Item>
+									<Button
+										style={{ width: '100%' }}
+										onClick={copyUrl}
+									>
+                    仅复制url
+									</Button>
+								</Form.Item>
 								<Form.Item>
 									<Button
 										style={{ width: '100%' }}
