@@ -59,6 +59,8 @@
       &-name {
         color: #666666;
         font-weight: bold;
+        display: flex;
+        align-items: center
       }
       &-price {
         color: #7497CD;
@@ -102,6 +104,7 @@
   border-radius: 2px;
   margin-right: 8px;
   height: 19px;
+  font-weight: normal;
   &-name {
     display: flex;
     justify-content: center;
