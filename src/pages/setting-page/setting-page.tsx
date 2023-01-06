@@ -199,7 +199,10 @@ export const SettingPage = () => {
 									</Form.Item>
 									<Form.Item noStyle>
 										<Button
-											onClick={() => setNameColor(DEFAULT_NAME_COLOR)}
+											onClick={() => {
+												setNameColor(DEFAULT_NAME_COLOR);
+												form.setFieldValue('nameColor', DEFAULT_NAME_COLOR);
+											}}
 										>重置颜色</Button>
 									</Form.Item>
 									{
