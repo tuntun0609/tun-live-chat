@@ -53,7 +53,7 @@ export const DanmuList = ({
 
 	useInterval(() => {
 		removeInvisibleDanmu();
-	}, 50);
+	}, 20);
 
 	return (
 		<div className='danmu-list' ref={listRef}>

@@ -187,15 +187,20 @@ export const SettingPage = () => {
 													borderRadius: '4px',
 												}}></div>}
 											placeholder={'名称颜色'}
-											style={{ width: '100px' }}
+											style={{ width: '100px', marginRight: '10px' }}
 											onChange={e => setNameColor(e.target.value)}
 										/>
 									</Form.Item>
 									<Form.Item noStyle>
 										<Button
-											style={{ marginLeft: '10px' }}
+											style={{ marginRight: '10px' }}
 											onClick={() => setIsColorPickerShow(!isColorPickerShow)}
 										>选择颜色</Button>
+									</Form.Item>
+									<Form.Item noStyle>
+										<Button
+											onClick={() => setNameColor(DEFAULT_NAME_COLOR)}
+										>重置颜色</Button>
 									</Form.Item>
 									{
 										isColorPickerShow

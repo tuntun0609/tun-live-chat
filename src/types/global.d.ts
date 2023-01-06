@@ -10,6 +10,7 @@ type Setting = {
 	speed?: string,
 	nameColor?: string,
 	isCors?: 'true' | 'false',
+	isAnimation?: 'true' | 'false',
 };
 
 type DanmuItem = {
