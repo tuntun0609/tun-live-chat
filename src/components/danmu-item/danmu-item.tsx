@@ -93,7 +93,7 @@ const MsgItem = ({data}: {data: DanmuItem}) => (
 	>
 		{
 			data.setting?.isFansMedal === 'true'
-			&& data.data[3]?.length !== 0
+				&& data.data[3]?.length !== 0
 				? <FansMedal data={data.data?.[3]}></FansMedal>
 				: null
 		}
@@ -106,7 +106,15 @@ const MsgItem = ({data}: {data: DanmuItem}) => (
 			{data.data?.[2]?.[1]}
 		</div>
 		<div className='danmu-msg-message'>
-			{data.data?.[1]}
+			{
+				data.data?.[0]?.[13] === '{}'
+					? data.data?.[1]
+					: <img
+						height={data.data?.[0]?.[13]?.height / 2}
+						src={data.data?.[0]?.[13]?.url}
+						alt={data.data?.[1]}
+					></img>
+			}
 		</div>
 	</div>
 );
