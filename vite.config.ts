@@ -14,4 +14,13 @@ export default defineConfig({
 			'@locale': path.join(__dirname, 'node_modules/antd/locale'),
 		},
 	},
+	server: {
+		proxy: {
+			'/api': {
+				target: 'https://api.bilibili.com',
+				changeOrigin: true,
+				rewrite: path => path.replace(/^\/api/, ''),
+			},
+		},
+	},
 });

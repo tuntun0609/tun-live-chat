@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { isEmpty } from 'lodash';
 
 import { dec2hex } from '@utils';
 
@@ -6,7 +7,6 @@ import ship1Icon from '../../assets/ship-1.png';
 import ship2Icon from '../../assets/ship-2.png';
 import ship3Icon from '../../assets/ship-3.png';
 import './danmu-item.scss';
-import { isEmpty } from 'lodash';
 
 export enum DanmuType {
 	DANMU = 'DANMU_MSG',
@@ -90,10 +90,13 @@ const MsgItem = ({data}: {data: DanmuItem}) => (
 	<div
 		data-id={data.key}
 		className='danmu-item danmu-msg'
+		style={{
+			animation: data.setting?.isAnimation === 'false' ? 'none' : '0.5s danmuIn',
+		}}
 	>
 		{
 			data.setting?.isFansMedal === 'true'
-				&& data.data[3]?.length !== 0
+			&& data.data[3]?.length !== 0
 				? <FansMedal data={data.data?.[3]}></FansMedal>
 				: null
 		}
@@ -162,17 +165,27 @@ const ScItem = ({data}: {data: DanmuItem}) => (
 	</div>
 );
 
+// 通知消息
+const InfoItem = ({data}: {data: DanmuItem}) => (
+	<div
+		data-id={data.key}
+		className='danmu-item danmu-info'
+		style={{
+			animation: data.setting?.isAnimation === 'false' ? 'none' : '0.5s danmuIn',
+		}}
+	>{data.data.info}</div>
+);
+
 export const DanmuItem = (props: {danmuData: DanmuItem}) => {
 	const { danmuData } = props;
 	switch (danmuData.type) {
 	// 普通弹幕
 	case DanmuType.DANMU:
-		return (
-			<MsgItem data={danmuData}></MsgItem>
-		);
+		return <MsgItem data={danmuData}></MsgItem>;
 	// 通知信息
 	case DanmuType.INFO:
-		return <div data-id={danmuData.key} className='danmu-item danmu-info'>{danmuData.data.info}</div>;
+		return <InfoItem data={danmuData}></InfoItem>;
+	// sc消息
 	case DanmuType.SC:
 		return <ScItem data={danmuData}></ScItem>;
 	default:

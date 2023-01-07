@@ -38,3 +38,15 @@ export const getRoomInfo = async (roomid: number, cors?: boolean) => {
 		cors,
 	});
 };
+
+export const getUserInfo = async (mid: number, cors?: boolean) => {
+	const baseUrl = '/api/x/space/acc/info';
+	// const baseUrl = 'https://api.bilibili.com/x/space/acc/info';
+	return get({
+		url: baseUrl,
+		query: {
+			mid: mid,
+		},
+		cors,
+	});
+};
