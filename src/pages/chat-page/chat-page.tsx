@@ -59,6 +59,7 @@ export const ChatPage = () => {
 				data: {
 					info: `加入房间 ${query?.roomid}`,
 				},
+				setting: query,
 			});
 			break;
 		case 3:
@@ -114,6 +115,7 @@ export const ChatPage = () => {
 			data: {
 				info: '正在获取房间信息...',
 			},
+			setting: query,
 		});
 		let roomInfo: {
 			[key: string]: any,
@@ -130,6 +132,7 @@ export const ChatPage = () => {
 				data: {
 					info: '获取房间信息成功！',
 				},
+				setting: query,
 			});
 		} catch (error) {
 			addDanmu({
@@ -138,6 +141,7 @@ export const ChatPage = () => {
 				data: {
 					info: '获取房间信息失败，请重试 :(',
 				},
+				setting: query,
 			});
 			return;
 		}
@@ -152,6 +156,7 @@ export const ChatPage = () => {
 				data: {
 					info: '正在连接',
 				},
+				setting: query,
 			});
 			ws.current?.send(encode(JSON.stringify({
 				uid: 0,
@@ -178,7 +183,15 @@ export const ChatPage = () => {
 			{
 				query?.isDebug === 'true'
 					? <Button onClick={() => {
-						onClose();
+						// onClose();
+
+						// test scItem
+						// addDanmu({
+						// 	key: uuid(),
+						// 	type: DanmuType.SC,
+						// 	data: scTestData,
+						// 	setting: query,
+						// });
 					}}>debug</Button>
 					: null
 			}
