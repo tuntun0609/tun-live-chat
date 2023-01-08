@@ -3,7 +3,7 @@ type Setting = {
 	isTTS?: string,
 	voice?: string,
 	direction?: 'top' | 'bottom',
-	isFansMedal?: 'true' | 'false',
+	isFansMedal?: 'all' | 'onlyFans' | 'false',
 	isDebug?: 'true' | 'false',
 	removeDelay?: string,
 	offset?: string,

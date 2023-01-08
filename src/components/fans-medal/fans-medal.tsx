@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
+import { isEmpty } from 'lodash';
 
 import { dec2hex } from '@utils';
+import { DanmuType } from '../danmu-item/danmu-item';
 
 import './fans-medal.scss';
 import ship1Icon from '../../assets/ship-1.png';
@@ -23,6 +25,30 @@ export const fansMedalDataTran = (data: any) => ([
 	data.is_lighted,
 ]);
 
+export const isShowFansMedal = (data: DanmuItem) => {
+	if (data.setting?.isFansMedal !== 'false') {
+		if (data.type === DanmuType.DANMU) {
+			if (data.data[3]?.length !== 0) {
+				if (data.setting?.isFansMedal === 'all') {
+					return true;
+				} else if (
+					data.setting?.isFansMedal === 'onlyFans'
+					&& data.data?.[3]?.[3] === parseInt(data.setting?.roomid ?? '-1', 10)
+				) {
+					return true;
+				}
+			}
+		}
+		if (data.type === DanmuType.GIFT || data.type === DanmuType.SC) {
+			console.log(data);
+			if (!isEmpty(data.data?.medal_info ?? {})) {
+				return true;
+			}
+		}
+	}
+	return false;
+};
+
 // 粉丝勋章
 export const FansMedal = ({data}: {data: any}) => {
 	const color1 = useMemo(() => dec2hex(data[4]), []);
@@ -40,9 +66,11 @@ export const FansMedal = ({data}: {data: any}) => {
 			return '';
 		}
 	};
-	return (
+	if (
 		data?.[11] === 1
-			? <div className='fans-medal'
+	) {
+		return (
+			<div className='fans-medal'
 				style={{
 					borderColor: `#${color2}`,
 				}}
@@ -71,6 +99,7 @@ export const FansMedal = ({data}: {data: any}) => {
 					{data[0]}
 				</div>
 			</div>
-			: null
-	);
+		);
+	}
+	return null;
 };

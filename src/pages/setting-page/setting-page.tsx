@@ -87,6 +87,7 @@ export const SettingPage = () => {
 									nameColor: DEFAULT_NAME_COLOR,
 									isAnimation: 'true',
 									isGift: 'true',
+									isFansMedal: 'false',
 								} as Setting}
 							>
 								{/* 房间号 */}
@@ -229,9 +230,15 @@ export const SettingPage = () => {
 								<Form.Item
 									name={'isFansMedal'}
 									label={'是否显示粉丝勋章'}
-									valuePropName={'checked'}
 								>
-									<Switch></Switch>
+									<Select
+										style={{ width: '100%' }}
+										options={[
+											{ value: 'false', label: '关闭' },
+											{ value: 'all', label: '展示全部粉丝勋章' },
+											{ value: 'onlyFans', label: '展示本房间粉丝勋章' },
+										]}
+									></Select>
 								</Form.Item>
 								{/* 是否显示礼物信息 */}
 								<Form.Item

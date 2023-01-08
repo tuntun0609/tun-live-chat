@@ -65,6 +65,9 @@
         display: flex;
         align-items: center
       }
+      &-face {
+        margin-right: 8px;
+      }
       &-price {
         color: #7497CD;
         &::before {
