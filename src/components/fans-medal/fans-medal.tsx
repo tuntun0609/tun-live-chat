@@ -16,9 +16,9 @@ export const fansMedalDataTran = (data: any) => ([
 	data.medal_color_start,
 	data.special,
 	data.icon_id,
-	data.medal_color_end,
-	data.medal_color_end,
 	data.medal_color_border,
+	data.medal_color_end,
+	data.medal_color_end,
 	data.guard_level,
 	data.is_lighted,
 ]);
