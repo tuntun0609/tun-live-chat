@@ -5,7 +5,10 @@ import { FansMedal, fansMedalDataTran } from '@components';
 
 // 礼物消息
 export const GiftItem = ({data}: {data: DanmuItem}) => (
-	<div className='danmu-item danmu-gift'>
+	<div
+		data-id={data.key}
+		className='danmu-item danmu-gift'
+	>
 		<div className='danmu-gift-header'>
 			{
 				data.setting?.isFansMedal === 'true'
