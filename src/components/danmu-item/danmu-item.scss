@@ -94,6 +94,31 @@
       2px 2px #000000;
     
   }
+
+  &-gift {
+    display: flex;
+    max-width: 600px;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+    &-header {
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      background-color: #2A60B2;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      &-face {
+        margin-right: 8px;
+      }
+    }
+    &-content {
+      padding: 12px;
+      background-color: #7497CD;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+    }
+  }
 }
 
 .fans-medal {

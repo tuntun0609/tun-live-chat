@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { isEmpty } from 'lodash';
+import { Avatar } from 'antd';
 
 import { dec2hex } from '@utils';
 
@@ -177,6 +178,30 @@ const InfoItem = ({data}: {data: DanmuItem}) => (
 	>{data.data.info}</div>
 );
 
+// 礼物消息
+const GiftItem = ({data}: {data: DanmuItem}) => (
+	<div className='danmu-item danmu-gift'>
+		<div className='danmu-gift-header'>
+			{
+				data.setting?.isFansMedal === 'true'
+					&& !isEmpty(data.data?.medal_info ?? {})
+					? <FansMedal data={fansMedalDataTran(data.data?.medal_info ?? {})}></FansMedal>
+					: null
+			}
+			<Avatar
+				className='danmu-gift-header-face'
+				src={data.data?.face}
+			></Avatar>
+			<div className='danmu-gift-header-name'>
+				{data.data?.uname}
+			</div>
+		</div>
+		<div className='danmu-gift-content'>
+			{data.data.action} {data.data.num} 个 {data.data.giftName}
+		</div>
+	</div>
+);
+
 export const DanmuItem = (props: {danmuData: DanmuItem}) => {
 	const { danmuData } = props;
 	switch (danmuData.type) {
@@ -189,6 +214,8 @@ export const DanmuItem = (props: {danmuData: DanmuItem}) => {
 	// sc消息
 	case DanmuType.SC:
 		return <ScItem data={danmuData}></ScItem>;
+	case DanmuType.GIFT:
+		return <GiftItem data={danmuData}></GiftItem>;
 	default:
 		return null;
 	}

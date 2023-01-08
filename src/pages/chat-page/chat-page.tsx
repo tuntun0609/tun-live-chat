@@ -69,8 +69,8 @@ export const ChatPage = () => {
 			packet.body.forEach((body: any)=>{
 				switch (body.cmd) {
 				case DanmuType.DANMU:
-					console.log(body);
-					console.log(`${body.info[2][1]}: ${body.info[1]}`);
+					// console.log(body);
+					// console.log(`${body.info[2][1]}: ${body.info[1]}`);
 					addDanmu({
 						key: uuid(),
 						type: DanmuType.DANMU,
@@ -79,7 +79,15 @@ export const ChatPage = () => {
 					});
 					break;
 				case DanmuType.GIFT:
-					console.log(`${body.data.uname} ${body.data.action} ${body.data.num} 个 ${body.data.giftName}`);
+					// console.log(body);
+					if (body.data?.coin_type === 'gold') {
+						addDanmu({
+							key: uuid(),
+							type: DanmuType.GIFT,
+							data: body.data,
+							setting: query,
+						});
+					}
 					break;
 				case DanmuType.WELCOME:
 					// console.log(`欢迎 ${body.data.uname}`);
@@ -94,6 +102,9 @@ export const ChatPage = () => {
 						setting: query,
 					});
 					onTTS(`${body.data.user_info.uname} 发送sc: ${body.data.message}`);
+					break;
+				case DanmuType.SHIP:
+					console.log(body);
 					break;
 				// 此处省略很多其他通知类型
 				default:
@@ -185,11 +196,11 @@ export const ChatPage = () => {
 					? <Button onClick={() => {
 						// onClose();
 
-						// test scItem
+						// add test data
 						// addDanmu({
 						// 	key: uuid(),
-						// 	type: DanmuType.SC,
-						// 	data: scTestData,
+						// 	type: DanmuType.GIFT,
+						// 	data: giftTestData1.data,
 						// 	setting: query,
 						// });
 					}}>debug</Button>
