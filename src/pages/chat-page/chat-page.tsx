@@ -80,7 +80,10 @@ export const ChatPage = () => {
 					break;
 				case DanmuType.GIFT:
 					// console.log(body);
-					if (body.data?.coin_type === 'gold') {
+					if (
+						query?.isGift !== 'false'
+						&& body.data?.coin_type === 'gold'
+					) {
 						addDanmu({
 							key: uuid(),
 							type: DanmuType.GIFT,

@@ -86,6 +86,7 @@ export const SettingPage = () => {
 									isCors: 'false',
 									nameColor: DEFAULT_NAME_COLOR,
 									isAnimation: 'true',
+									isGift: 'true',
 								} as Setting}
 							>
 								{/* 房间号 */}
@@ -228,6 +229,14 @@ export const SettingPage = () => {
 								<Form.Item
 									name={'isFansMedal'}
 									label={'是否显示粉丝勋章'}
+									valuePropName={'checked'}
+								>
+									<Switch></Switch>
+								</Form.Item>
+								{/* 是否显示礼物信息 */}
+								<Form.Item
+									name={'isGift'}
+									label={'是否显示礼物信息'}
 									valuePropName={'checked'}
 								>
 									<Switch></Switch>

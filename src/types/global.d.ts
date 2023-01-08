@@ -11,6 +11,7 @@ type Setting = {
 	nameColor?: string,
 	isCors?: 'true' | 'false',
 	isAnimation?: 'true' | 'false',
+	isGift?: 'true' | 'false',
 };
 
 type DanmuItem = {
