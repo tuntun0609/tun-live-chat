@@ -104,12 +104,22 @@
     &-header {
       padding: 12px;
       display: flex;
+      justify-content: space-between;
       align-items: center;
       background-color: #2A60B2;
       border-top-left-radius: 6px;
       border-top-right-radius: 6px;
+      &-info {
+        display: flex;
+        align-items: center;
+      }
       &-face {
         margin-right: 8px;
+      }
+      &-price {
+        &::before {
+          content: '￥';
+        }
       }
     }
     &-content {
