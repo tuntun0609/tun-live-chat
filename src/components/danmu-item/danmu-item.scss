@@ -39,6 +39,9 @@
     }
     &-message {
       color: #fff;
+      &-image {
+        max-height: 50px;
+      }
     }
   }
 

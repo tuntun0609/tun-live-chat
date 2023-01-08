@@ -113,6 +113,7 @@ const MsgItem = ({data}: {data: DanmuItem}) => (
 				data.data?.[0]?.[13] === '{}'
 					? data.data?.[1]
 					: <img
+						className='danmu-msg-message-image'
 						height={data.data?.[0]?.[13]?.height / 2}
 						src={data.data?.[0]?.[13]?.url}
 						alt={data.data?.[1]}
