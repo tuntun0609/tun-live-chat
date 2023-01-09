@@ -1,5 +1,7 @@
-import { FansMedal, isShowFansMedal } from '@components';
 import { useMemo } from 'react';
+import classnames from 'classnames';
+
+import { FansMedal, isShowFansMedal } from '@components';
 
 // 普通消息
 export const MsgItem = ({data}: {data: DanmuItem}) => {
@@ -7,7 +9,16 @@ export const MsgItem = ({data}: {data: DanmuItem}) => {
 	return (
 		<div
 			data-id={data.key}
-			className={`danmu-item danmu-msg ${data.setting?.isAnimation === 'false' ? '' : 'danmu-in'}`}
+			className={classnames(
+				'danmu-item',
+				'danmu-msg',
+				{
+					'danmu-in': data.setting?.isAnimation !== 'false',
+				},
+				{
+					'danmu-fans': showFansMedal,
+				},
+			)}
 		>
 			{
 				showFansMedal

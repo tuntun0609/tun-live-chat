@@ -40,7 +40,6 @@ export const isShowFansMedal = (data: DanmuItem) => {
 			}
 		}
 		if (data.type === DanmuType.GIFT || data.type === DanmuType.SC) {
-			console.log(data);
 			if (!isEmpty(data.data?.medal_info ?? {})) {
 				return true;
 			}
