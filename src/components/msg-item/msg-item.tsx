@@ -7,10 +7,7 @@ export const MsgItem = ({data}: {data: DanmuItem}) => {
 	return (
 		<div
 			data-id={data.key}
-			className='danmu-item danmu-msg'
-			style={{
-				animation: data.setting?.isAnimation === 'false' ? 'none' : '0.5s danmuIn',
-			}}
+			className={`danmu-item danmu-msg ${data.setting?.isAnimation === 'false' ? '' : 'danmu-in'}`}
 		>
 			{
 				showFansMedal

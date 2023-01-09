@@ -2,9 +2,6 @@
 export const InfoItem = ({data}: {data: DanmuItem}) => (
 	<div
 		data-id={data.key}
-		className='danmu-item danmu-info'
-		style={{
-			animation: data.setting?.isAnimation === 'false' ? 'none' : '0.5s danmuIn',
-		}}
+		className={`danmu-item danmu-info ${data.setting?.isAnimation === 'false' ? '' : 'danmu-in'}`}
 	>{data.data.info}</div>
 );

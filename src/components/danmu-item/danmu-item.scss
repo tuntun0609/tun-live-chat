@@ -12,7 +12,7 @@
 .danmu {
   &-item {
     padding: 6px 6px;
-    transition: opacity 0.5s;
+    transition: 0.5s;
     user-select: none;
     opacity: 1;
     font-size: 20px;
@@ -22,7 +22,6 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    // animation: 0.5s danmuIn;
     flex-wrap: wrap;
     text-shadow: -2px -2px #000000, -2px -1px #000000, -2px 0 #000000, -2px 1px #000000, -2px 2px #000000,
       -1px -2px #000000, -1px -1px #000000, -1px 0 #000000, -1px 1px #000000, -1px 2px #000000, 0 -2px #000000,
@@ -43,6 +42,9 @@
         max-height: 50px;
       }
     }
+  }
+  &-in {
+    animation: 0.5s danmuIn;
   }
 
   &-sc {
