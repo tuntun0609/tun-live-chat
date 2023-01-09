@@ -12,7 +12,7 @@
 .danmu {
   &-item {
     padding: 6px 6px;
-    transition: 0.5s;
+    transition: 0.3s;
     user-select: none;
     opacity: 1;
     font-size: 20px;
@@ -44,7 +44,7 @@
     }
   }
   &-in {
-    animation: 0.5s danmuIn;
+    animation: 0.3s danmuIn;
   }
 
   &-sc {
