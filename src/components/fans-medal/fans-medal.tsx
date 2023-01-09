@@ -34,13 +34,17 @@ export const isShowFansMedal = (data: DanmuItem) => {
 				} else if (
 					data.setting?.isFansMedal === 'onlyFans'
 					&& data.data?.[3]?.[3] === parseInt(data.setting?.roomid ?? '-1', 10)
+					&& data.data?.[3]?.[11] === 1
 				) {
 					return true;
 				}
 			}
 		}
 		if (data.type === DanmuType.GIFT || data.type === DanmuType.SC) {
-			if (!isEmpty(data.data?.medal_info ?? {})) {
+			if (
+				!isEmpty(data.data?.medal_info ?? {})
+				&& data.data?.medal_info?.is_lighted === 1
+			) {
 				return true;
 			}
 		}
@@ -65,40 +69,35 @@ export const FansMedal = ({data}: {data: any}) => {
 			return '';
 		}
 	};
-	if (
-		data?.[11] === 1
-	) {
-		return (
-			<div className='fans-medal'
+	return (
+		<div className='fans-medal'
+			style={{
+				borderColor: `#${color2}`,
+			}}
+		>
+			<div
+				className='fans-medal-name'
 				style={{
-					borderColor: `#${color2}`,
+					backgroundImage: `linear-gradient(45deg, #${color1}, #${color3})`,
 				}}
 			>
-				<div
-					className='fans-medal-name'
-					style={{
-						backgroundImage: `linear-gradient(45deg, #${color1}, #${color3})`,
-					}}
-				>
-					{
-						data[10] === 1 || data[10] === 2 || data[10] === 3
-							? <i className='fans-medal-ship-icon' style={{
-								backgroundImage: `url(${getShipIcon(data[10])})`,
-							}}></i>
-							: null
-					}
-					{data[1]}
-				</div>
-				<div
-					className='fans-medal-level'
-					style={{
-						color: `#${color1}`,
-					}}
-				>
-					{data[0]}
-				</div>
+				{
+					data[10] === 1 || data[10] === 2 || data[10] === 3
+						? <i className='fans-medal-ship-icon' style={{
+							backgroundImage: `url(${getShipIcon(data[10])})`,
+						}}></i>
+						: null
+				}
+				{data[1]}
 			</div>
-		);
-	}
-	return null;
+			<div
+				className='fans-medal-level'
+				style={{
+					color: `#${color1}`,
+				}}
+			>
+				{data[0]}
+			</div>
+		</div>
+	);
 };
