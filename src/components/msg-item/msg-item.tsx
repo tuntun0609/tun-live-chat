@@ -20,18 +20,20 @@ export const MsgItem = ({data}: {data: DanmuItem}) => {
 				},
 			)}
 		>
-			{
-				showFansMedal
-					? <FansMedal data={data.data?.[3]}></FansMedal>
-					: null
-			}
 			<div
-				className='danmu-msg-name with-colon'
+				className='danmu-msg-header with-colon'
 				style={{
 					color: data.data?.[2]?.[2] === 0 ? data.setting?.nameColor : '#FFB027',
 				}}
 			>
-				{data.data?.[2]?.[1]}
+				{
+					showFansMedal
+						? <FansMedal data={data.data?.[3]}></FansMedal>
+						: null
+				}
+				<div className='danmu-msg-header-name'>
+					{data.data?.[2]?.[1]}
+				</div>
 			</div>
 			<div className='danmu-msg-message'>
 				{
