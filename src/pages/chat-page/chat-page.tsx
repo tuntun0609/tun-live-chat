@@ -12,7 +12,7 @@ import './chat-page.scss';
 
 export const ChatPage = () => {
 	const ws = useRef<WebSocket | null>(null);
-	const heartbeatId = useRef<number | undefined | null>(null);
+	const heartbeatId = useRef<number | NodeJS.Timer | null>(null);
 	const voicesList = useSpeechSynthesisVoices();
 	const query = useQuery<Setting>();
 	const [danmuList, addDanmu, removeDanmu] = useChatList(str2num(query?.speed));
@@ -202,8 +202,8 @@ export const ChatPage = () => {
 						// add test data
 						// addDanmu({
 						// 	key: uuid(),
-						// 	type: DanmuType.GIFT,
-						// 	data: giftTestData1.data,
+						// 	type: DanmuType.SC,
+						// 	data: scTestData2,
 						// 	setting: query,
 						// });
 					}}>debug</Button>
