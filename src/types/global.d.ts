@@ -12,6 +12,7 @@ type Setting = {
 	isCors?: 'true' | 'false',
 	isAnimation?: 'true' | 'false',
 	isGift?: 'true' | 'false',
+	isFace?: 'true' | 'false',
 };
 
 type DanmuItem = {

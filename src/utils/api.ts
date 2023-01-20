@@ -39,9 +39,10 @@ export const getRoomInfo = async (roomid: number, cors?: boolean) => {
 	});
 };
 
+// 获取用户信息
 export const getUserInfo = async (mid: number, cors?: boolean) => {
-	const baseUrl = '/api/x/space/acc/info';
-	// const baseUrl = 'https://api.bilibili.com/x/space/acc/info';
+	// const baseUrl = '/api/x/space/acc/info';
+	const baseUrl = 'https://api.bilibili.com/x/web-interface/card';
 	return get({
 		url: baseUrl,
 		query: {

@@ -8,3 +8,5 @@ export * from './is-str-number';
 export * from './remove-empty-field';
 export * from './DEFAULT_VALUES';
 export * from './copy-data-to-clipboard';
+export * from './face';
+export * from './storage';
