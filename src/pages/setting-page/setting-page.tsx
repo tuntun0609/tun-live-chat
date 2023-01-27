@@ -241,13 +241,13 @@ export const SettingPage = () => {
 									></Select>
 								</Form.Item>
 								{/* 是否显示头像 */}
-								<Form.Item
+								{/* <Form.Item
 									name={'isFace'}
 									label={'是否显示头像'}
 									valuePropName={'checked'}
 								>
 									<Switch></Switch>
-								</Form.Item>
+								</Form.Item> */}
 								{/* 是否显示礼物信息 */}
 								<Form.Item
 									name={'isGift'}

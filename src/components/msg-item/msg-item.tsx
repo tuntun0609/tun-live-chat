@@ -13,7 +13,7 @@ export const MsgItem = ({data}: {data: DanmuItem}) => {
 		const init = async () => {
 			console.log(data);
 			if (data.setting?.isFace === 'true') {
-				const faceUrl = await getFace(data.data?.[2]?.[0]);
+				const faceUrl = await getFace(data.data?.[2]?.[0], data.setting?.isCors === 'true' ? true : false);
 				console.log(faceUrl);
 				setFace(`${faceUrl}_48x48.jpg`);
 			}
